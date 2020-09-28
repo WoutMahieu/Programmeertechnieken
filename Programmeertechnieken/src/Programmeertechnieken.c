@@ -22,7 +22,7 @@
 
 int main(void) {
 
-    printf("Hello World\n");
+    printf("Juuw de mannen, ik ben de Joeri!\n");
 
     // Force the counter to be placed into memory
     volatile static int i = 0 ;
