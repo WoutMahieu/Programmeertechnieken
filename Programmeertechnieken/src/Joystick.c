@@ -36,7 +36,7 @@ void JS_disable(){
 
 void JS_init(){
 
-	//Setting joystick GPIO pins as inputs
+	//Setting joystic GPIO pins as inputs
 	LPC_GPIO0->FIODIR &= ~(7 << 15); //select p0.15, p0.16 and p0.17 (JOYSTICK LEFT, CENTER and DOWN) and write 0 to make it an input
 	LPC_GPIO0->FIODIR &= ~(3 << 23); //select p0.23 and p0.24 (JOYSTICK UP and RIGHT) and write 0 to make it an input
 
