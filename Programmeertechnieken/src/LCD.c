@@ -8,5 +8,5 @@
 #include <LCD.h>
 
 void LCD_Init(){
-
+	LPC
 }
