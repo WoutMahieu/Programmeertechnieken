@@ -6,6 +6,7 @@
  */
 
 #include "Delay.h"
+#include "lpc17xx.h"
 
 void Wait_s(uint32_t t) {
 	const uint32_t PCLK = 25000000; //CCLK/4 = 25 MHz
@@ -29,7 +30,7 @@ void Wait_ms(uint32_t t) {
 	while (LPC_TIM0->TCR == 1){} //wait for the match to be reached
 }
 
-void Wait_µs(uint32_t t) {
+void Wait_us(uint32_t t) {
 	const uint32_t PCLK = 25000000; //CCLK/4 = 25 MHz
 
 	LPC_TIM0->TCR = (1 << 1); //Reset
