@@ -36,7 +36,7 @@ void JS_disable(){
 
 void JS_init(){
 
-	//Setting Joystick GPIO pins as inputs
+	//Setting joystick GPIO pins as inputs
 	LPC_GPIO0->FIODIR &= ~(7 << 15); //select p0.15, p0.16 and p0.17 (JOYSTICK LEFT, CENTER and DOWN) and write 0 to make it an input
 	LPC_GPIO0->FIODIR &= ~(3 << 23); //select p0.23 and p0.24 (JOYSTICK UP and RIGHT) and write 0 to make it an input
 
@@ -45,10 +45,12 @@ void JS_init(){
 	LPC_PINCON->PINMODE1 |= 15; //p0.16 and p0.17
 	LPC_PINCON->PINMODE1 |= (15 << 14); //p0.23 and p0.24
 
-	LPC_GPIOINT->IO0IntEnR |= (7 << 15); //enable GPIO interrupts for p0.15, p0.16 and p0.17 rising edge
-	LPC_GPIOINT->IO0IntEnR |= (3 << 23); //enable GPIO interrupts for p0.23 and p0.24 rising edge
+	//enable GPIO interrupts rising edge
+	LPC_GPIOINT->IO0IntEnR |= (7 << 15); //p0.15, p0.16 and p0.17
+	LPC_GPIOINT->IO0IntEnR |= (3 << 23); //p0.23 and p0.24
 
-	NVIC_EnableIRQ(EINT3_IRQn); //enable External Interrupt 0 Interrupt
+	//enable External Interrupt 0 Interrupt
+	NVIC_EnableIRQ(EINT3_IRQn);
 	//note: we use EINT3 instead of EINT0 (doesn't work?!): all GPIO interrupt are connected to EINT3 interrupt source
 	//https://binaryupdates.com/gpio-in-cortex-m3-lpc1768-microcontroller/2/
 }
