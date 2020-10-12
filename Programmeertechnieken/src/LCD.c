@@ -9,7 +9,9 @@
 #include "SSP.h"
 #include "Delay.h"
 
-void LCD_Init(){
+uint8_t LCD_screenBuffer[512] = { };
+
+void LCD_Init(void){
 	//initialize SSP
 	SSP_Init();
 
@@ -48,26 +50,32 @@ void LCD_Data(uint8_t data){
 	LPC_GPIO0->FIOCLR |= (1 << 6); //A0 = 0 => command
 }
 
-void LCD_Clear(void){
-	LCD_SetPage(0);
-	LCD_SetColumn(0);
+void LCD_SetPage(uint8_t page){
+	LCD_Cmd((0xB0 | page));
+}
 
-	for(int i = 0; i < 128; i++){
-		LCD_Data(0x00);
+void LCD_SetColumn(uint8_t col){
+	LCD_Cmd((0x0F & col));
+	LCD_Cmd(0x10 | ((0xF0 & col) >> 4));
+}
+
+void LCD_Clear(void){
+	for(uint8_t i = 0; i < 512; i++){
+		LCD_screenBuffer[i] = 0x00;
 	}
+
+	LCD_Update();
 }
 
 void LCD_Update(void){
+	for(uint8_t p = 0; p < 4; p++){
+		LCD_SetPage(p);
+		LCD_SetColumn(0);
 
-}
-
-void LCD_SetPage(uint8_t page){
-	LCD_Cmd(0xB0 | page);
-}
-
-void LCD_SetColumn(uint8_t column){
-	LCD_Cmd(column & 0x0F); //least significant
-	LCD_Cmd(0x10 & ((0xF0 & column) >> 4)); //most significant
+		for(uint8_t i = 0; i < 128; i++){
+			LCD_Data(LCD_screenBuffer[p * 128 + i]);
+		}
+	}
 }
 
 void LCD_Test(void){

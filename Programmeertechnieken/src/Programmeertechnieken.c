@@ -24,5 +24,6 @@
 int main(void) {
 	LCD_Init();
 
-    return 0;
+	LCD_Clear();
+	return 0;
 }

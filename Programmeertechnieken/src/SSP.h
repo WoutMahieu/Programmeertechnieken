@@ -11,7 +11,7 @@
 #include "lpc17xx.h"
 #include "Delay.h"
 
-void SSP_Init();
+void SSP_Init(void);
 uint8_t SSP_Write(uint8_t data);
 
 #endif /* SSP_H_ */
