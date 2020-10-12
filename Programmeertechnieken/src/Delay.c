@@ -6,7 +6,6 @@
  */
 
 #include "Delay.h"
-#include "lpc17xx.h"
 
 void Wait_s(uint32_t t) {
 	const uint32_t PCLK = 25000000; //CCLK/4 = 25 MHz

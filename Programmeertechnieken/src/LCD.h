@@ -13,5 +13,10 @@
 void LCD_Init(void);
 void LCD_Cmd(uint8_t cmd);
 void LCD_Data(uint8_t data);
+void LCD_Clear(void);
+void LCD_Update(void);
+void LCD_SetPage(uint8_t page);
+void LCD_SetColumn(uint8_t column);
+void LCD_Test(void);
 
 #endif /* LCD_H_ */
