@@ -18,12 +18,35 @@
 
 // TODO: insert other include files here
 #include "LCD.h"
+#include "Joystick.h"
 
 // TODO: insert other definitions and declarations here
 
 int main(void) {
-	LCD_Init();
+	JS_init();
+	JS_enable();
 
-	LCD_Clear();
+	while(1){
+		if(getJSFlags() == 1){
+			printf("LEFT\n");
+			setJSFlags(0);
+		}
+		else if(getJSFlags() == 2){
+			printf("CENTER\n");
+			setJSFlags(0);
+		}
+		else if(getJSFlags() == 4){
+			printf("DOWN\n");
+			setJSFlags(0);
+		}
+		else if(getJSFlags() == 8){
+			printf("UP\n");
+			setJSFlags(0);
+		}
+		else if(getJSFlags() == 16){
+			printf("RIGHT\n");
+			setJSFlags(0);
+		}
+	}
 	return 0;
 }
