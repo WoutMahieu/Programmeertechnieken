@@ -100,7 +100,7 @@ void LCD_Char(char c){
 	x++;
 }
 
-void LCD_Write(char *s){
+void LCD_Print(char *s){
 	while(*s){
 		LCD_Char(*s);
 		s++;

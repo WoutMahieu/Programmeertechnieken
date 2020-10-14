@@ -23,6 +23,9 @@
 
 int main(void) {
 	LCD_Init();
+	LCD_Print("HeLLo WOrlD");
+	LCD_Cursor(5,6);
+	LCD_Print("GLITCHING... I GUESS");
 
 	return 0;
 }
