@@ -8,8 +8,12 @@
 #include "LCD.h"
 #include "SSP.h"
 #include "Delay.h"
+#include "Fonts.h"
+#include <stdio.h>
 
-uint8_t LCD_screenBuffer[512] = { };
+uint32_t LCD_screenBuffer[128] = { };
+uint8_t LCD_autoUpdate = 1;
+uint8_t x, y = 0;
 
 void LCD_Init(void){
 	//initialize SSP
@@ -36,6 +40,8 @@ void LCD_Init(void){
 	LCD_Cmd(0x17); //contrast value
 	LCD_Cmd(0xA6); //display normal
 	LCD_Cmd(0xE0); //read-modify-write
+
+	LCD_Clear();
 }
 
 void LCD_Cmd(uint8_t data){
@@ -59,9 +65,10 @@ void LCD_SetColumn(uint8_t col){
 	LCD_Cmd(0x10 | ((0xF0 & col) >> 4));
 }
 
+
 void LCD_Clear(void){
-	for(uint8_t i = 0; i < 512; i++){
-		LCD_screenBuffer[i] = 0x00;
+	for(uint8_t i = 0; i < 128; i++){
+		LCD_screenBuffer[i] = 0x00000000;
 	}
 
 	LCD_Update();
@@ -73,11 +80,39 @@ void LCD_Update(void){
 		LCD_SetColumn(0);
 
 		for(uint8_t i = 0; i < 128; i++){
-			LCD_Data(LCD_screenBuffer[p * 128 + i]);
+			uint8_t d = ((LCD_screenBuffer[i] & (0xFF << (8*p))) >> (8*p));
+			LCD_Data(d);
 		}
 	}
 }
 
-void LCD_Test(void){
+void LCD_Char(char c){
+	uint16_t i, j;
+	i = (c - ' ') * 5;
 
+	for(j = 0; j < Fonts_normal[i]; j++){
+		LCD_screenBuffer[x] &= ~(0xFF << y);
+		LCD_screenBuffer[x] |= (Fonts_normal[1 + i + j] << y);
+		x++;
+	}
+
+	//1px whitespace after any char
+	LCD_screenBuffer[x] &= ~(0xFF << y);
+	x++;
+}
+
+void LCD_Write(char *s){
+	while(*s){
+		LCD_Char(*s);
+		s++;
+	}
+
+	if(LCD_autoUpdate){
+		LCD_Update();
+	}
+}
+
+void LCD_Cursor(uint8_t _x, uint8_t _y){
+	x = _x;
+	y = _y;
 }
