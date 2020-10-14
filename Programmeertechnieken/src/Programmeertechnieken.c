@@ -23,11 +23,6 @@
 
 int main(void) {
 	LCD_Init();
-	LCD_Cursor(10, 15);
-	LCD_Write("a");
-	LCD_Cursor(15, 10);
-	LCD_Write("b");
-	LCD_Cursor(80, 3);
-	LCD_Write("c");
+
 	return 0;
 }

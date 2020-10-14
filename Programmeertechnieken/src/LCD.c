@@ -9,7 +9,6 @@
 #include "SSP.h"
 #include "Delay.h"
 #include "Fonts.h"
-#include <stdio.h>
 
 uint32_t LCD_screenBuffer[128] = { };
 uint8_t LCD_autoUpdate = 1;
@@ -115,4 +114,32 @@ void LCD_Write(char *s){
 void LCD_Cursor(uint8_t _x, uint8_t _y){
 	x = _x;
 	y = _y;
+}
+
+void LCD_Pixel(uint8_t x, uint8_t y){
+	LCD_screenBuffer[x] |= (0x01 << y);
+
+	if(LCD_autoUpdate){
+		LCD_Update();
+	}
+}
+
+void LCD_Line(uint8_t x1, uint8_t y1, uint8_t x2, uint8_t y2){
+	float m = (float)(y2 - y1) / (x2 - x1);
+
+	for(uint8_t i = x1; i < (x2 - x1); i++){
+		LCD_Pixel(i, (uint8_t)(m * i - m * x1 + y1));
+	}
+
+	if(LCD_autoUpdate){
+		LCD_Update();
+	}
+}
+
+void LCD_Square(uint8_t x1, uint8_t y1, uint8_t x2, uint8_t y2){
+	for(uint8_t x = x1; x < (x2 - x1); x++){
+		for(uint8_t y = y1; y < (y2 - y1); y++){
+			LCD_Pixel(x, y);
+		}
+	}
 }
