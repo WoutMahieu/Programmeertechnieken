@@ -6,9 +6,6 @@
  */
 
 #include "FSM.h"
-#include "LCD.h"
-#include "ContactSwitch.h"
-#include "Delay.h"
 
 enum states {Init, Locked, Opened, Forced, Config};
 enum states FSM_currentState = Init;
@@ -44,9 +41,11 @@ void FSM_UpdateStates(void){
 }
 
 void FSM_Init(void){
-	LCD_Print("Initializing");
-
 	LCD_Init();
+	LCD_autoUpdate = 0;
+	LCD_Print("Initializing");
+	LCD_Update();
+
 	ContactSwitch_Init();
 }
 
@@ -55,7 +54,7 @@ void FSM_ExitInit(void){
 }
 
 void FSM_EnterLocked(void){
-	LCD_Print("Locked");
+	DisplayControl_LockedScreen();
 }
 
 void FSM_Locked(void){
@@ -67,7 +66,7 @@ void FSM_ExitLocked(void){
 }
 
 void FSM_EnterOpened(void){
-	LCD_Print("Open");
+	DisplayControl_OpenedScreen();
 }
 
 void FSM_Opened(void){

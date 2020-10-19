@@ -8,6 +8,11 @@
 #ifndef FSM_H_
 #define FSM_H_
 
+#include "LCD.h"
+#include "ContactSwitch.h"
+#include "DisplayControl.h"
+#include "Delay.h"
+
 extern enum states;
 extern enum currentState;
 
