@@ -137,10 +137,6 @@ void LCD_Line(uint8_t x1, uint8_t y1, uint8_t x2, uint8_t y2, uint8_t c){
 	for(uint8_t i = x1; i < (x2 - x1); i++){
 		LCD_Pixel(i, (uint8_t)(m * i - m * x1 + y1), c);
 	}
-
-	if(LCD_autoUpdate){
-		LCD_Update();
-	}
 }
 
 void LCD_Square(uint8_t x1, uint8_t y1, uint8_t x2, uint8_t y2, uint8_t c){

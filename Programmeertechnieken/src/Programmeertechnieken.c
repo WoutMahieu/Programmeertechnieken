@@ -8,8 +8,10 @@
 ===============================================================================
 */
 #include "FSM.h"
+#include "LCD.h"
 
 int main(void) {
+
 	while(1){
 		FSM_UpdateStates();
 	}
