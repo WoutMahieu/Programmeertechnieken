@@ -117,19 +117,25 @@ void LCD_Cursor(uint8_t _x, uint8_t _y){
 	y = _y;
 }
 
-void LCD_Pixel(uint8_t x, uint8_t y){
-	LCD_screenBuffer[x] |= (0x01 << y);
+void LCD_Pixel(uint8_t x, uint8_t y, uint8_t c){
+	if(c == 1){
+		LCD_screenBuffer[x] |= (0x01 << y);
+	}
+	else{
+		LCD_screenBuffer[x] &= ~(0x01 << y);
+	}
+
 
 	if(LCD_autoUpdate){
 		LCD_Update();
 	}
 }
 
-void LCD_Line(uint8_t x1, uint8_t y1, uint8_t x2, uint8_t y2){
+void LCD_Line(uint8_t x1, uint8_t y1, uint8_t x2, uint8_t y2, uint8_t c){
 	float m = (float)(y2 - y1) / (x2 - x1);
 
 	for(uint8_t i = x1; i < (x2 - x1); i++){
-		LCD_Pixel(i, (uint8_t)(m * i - m * x1 + y1));
+		LCD_Pixel(i, (uint8_t)(m * i - m * x1 + y1), c);
 	}
 
 	if(LCD_autoUpdate){
@@ -137,10 +143,10 @@ void LCD_Line(uint8_t x1, uint8_t y1, uint8_t x2, uint8_t y2){
 	}
 }
 
-void LCD_Square(uint8_t x1, uint8_t y1, uint8_t x2, uint8_t y2){
-	for(uint8_t x = x1; x < (x2 - x1); x++){
-		for(uint8_t y = y1; y < (y2 - y1); y++){
-			LCD_Pixel(x, y);
+void LCD_Square(uint8_t x1, uint8_t y1, uint8_t x2, uint8_t y2, uint8_t c){
+	for(uint8_t x = x1; x < x2; x++){
+		for(uint8_t y = y1; y < y2; y++){
+			LCD_Pixel(x, y, c);
 		}
 	}
 }

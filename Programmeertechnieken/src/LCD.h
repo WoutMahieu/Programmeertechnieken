@@ -24,8 +24,8 @@ void LCD_Update(void);
 void LCD_Char(char c);
 void LCD_Print(char *s);
 void LCD_Cursor(uint8_t _x, uint8_t _y);
-void LCD_Pixel(uint8_t x, uint8_t y);
-void LCD_Line(uint8_t x1, uint8_t y1, uint8_t x2, uint8_t y2);
-void LCD_Square(uint8_t x1, uint8_t y1, uint8_t x2, uint8_t y2);
+void LCD_Pixel(uint8_t x, uint8_t y, uint8_t c);
+void LCD_Line(uint8_t x1, uint8_t y1, uint8_t x2, uint8_t y2, uint8_t c);
+void LCD_Square(uint8_t x1, uint8_t y1, uint8_t x2, uint8_t y2, uint8_t c);
 
 #endif /* LCD_H_ */
