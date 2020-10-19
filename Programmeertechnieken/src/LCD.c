@@ -71,6 +71,7 @@ void LCD_Clear(void){
 	}
 
 	LCD_Update();
+	LCD_Cursor(0,0);
 }
 
 void LCD_Update(void){
