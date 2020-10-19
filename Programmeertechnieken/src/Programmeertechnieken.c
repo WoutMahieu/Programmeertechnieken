@@ -7,25 +7,12 @@
  Description : main definition
 ===============================================================================
 */
-
-#ifdef __USE_CMSIS
-#include "LPC17xx.h"
-#endif
-
-#include <cr_section_macros.h>
-
-#include <stdio.h>
-
-// TODO: insert other include files here
-#include "LCD.h"
-
-// TODO: insert other definitions and declarations here
+#include "FSM.h"
 
 int main(void) {
-	LCD_Init();
-	LCD_Print("HeLLo WOrlD");
-	LCD_Cursor(5,6);
-	LCD_Print("GLITCHING... I GUESS");
+	while(1){
+		FSM_UpdateStates();
+	}
 
 	return 0;
 }
