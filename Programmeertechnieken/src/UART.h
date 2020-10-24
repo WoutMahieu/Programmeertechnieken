@@ -11,15 +11,17 @@
 #include <stdio.h>
 #include "LPC17xx.h"
 
-#define SIZEOFDATA 16
+#define SIZEOF_UART_DATA 16
 
 void UART_init();
 
 char UART_getCharacter();
 
-void UART0_IRQHandler();
+void UART2_IRQHandler();
 
-char * UART_getTag();
+void UART_readData();
+
+const char * UART_getData();
 
 uint8_t UART_getFlag();
 

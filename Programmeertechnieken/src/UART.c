@@ -7,7 +7,7 @@
 
 #include "UART.h"
 
-char tag[SIZEOFDATA];
+char uartData[SIZEOF_UART_DATA];
 uint8_t dataRead = 0;
 uint8_t IIR;
 
@@ -43,8 +43,8 @@ void UART_init(){
 	LPC_PINCON->PINMODE0 |= (1 << 23); // p0.11: neither pull-up nor pull-down
 
 	//6. Interrupts
-	LPC_UART2->IER |= 1; //enables the Receive Data Available interrupt
-	NVIC_EnableIRQ(UART2_IRQn); //enable UART2 interrupts
+	//LPC_UART2->IER |= 1; //enables the Receive Data Available interrupt
+	//NVIC_EnableIRQ(UART2_IRQn); //enable UART2 interrupts
 
 	//8. Enable 8-bit character length
 	LPC_UART2->LCR |= 3;
@@ -58,10 +58,7 @@ char UART_getCharacter(){
 	return LPC_UART2->RBR;
 }
 
-void UART2_IRQHandler() {
-
-	printf("IRQHandler reached\n");
-
+void UART_readData(){
 	IIR = LPC_UART2->IIR;
 
 	//Shifting out the interruptstatus bit
@@ -71,12 +68,12 @@ void UART2_IRQHandler() {
 	IIR &= 0x07;
 
 	//Check if interruptid = RDA (Receive Data Available)
-	if(IIR == 0x02 && dataRead == 0){
+	if(IIR == 0x02){
 		//used for debugging
 		//printf("Data available\n");
 
-		for(int i = 0; i < SIZEOFDATA; i++){
-			tag[i] = UART_getCharacter();
+		for(int i = 0; i < SIZEOF_UART_DATA; i++){
+			uartData[i] = UART_getCharacter();
 			//used for debugging
 			//printf("%c\n", tag[i]);
 		}
@@ -86,8 +83,8 @@ void UART2_IRQHandler() {
 	}
 }
 
-char * UART_getTag(){
-	return tag;
+const char * UART_getData(){
+	return uartData;
 }
 
 uint8_t UART_getFlag(){
