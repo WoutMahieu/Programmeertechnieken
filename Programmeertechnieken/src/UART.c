@@ -83,14 +83,6 @@ void UART_readData(){
 	}
 }
 
-const char * UART_getData(){
+char * UART_getData(){
 	return uartData;
-}
-
-uint8_t UART_getFlag(){
-	return dataRead;
-}
-
-void UART_setFlag(uint8_t flag){
-	dataRead = flag;
 }

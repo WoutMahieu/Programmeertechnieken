@@ -26,6 +26,8 @@ void RFID_driveLED();
 char* RFID_getTagAndCheckSum(char * uartData);
 char* RFID_convertASCIIHEX(char * data);
 int RFID_checkSum(char * data);
+char* RFID_getTag(char * hexData);
+void RFID_dataHandler(int saveTag);
 
 //int getTagInRange();
 void EINT3_IRQHandler();

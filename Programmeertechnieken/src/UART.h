@@ -17,14 +17,8 @@ void UART_init();
 
 char UART_getCharacter();
 
-void UART2_IRQHandler();
-
 void UART_readData();
 
-const char * UART_getData();
-
-uint8_t UART_getFlag();
-
-void UART_setFlag(uint8_t);
+char * UART_getData();
 
 #endif /* UART_H_ */
