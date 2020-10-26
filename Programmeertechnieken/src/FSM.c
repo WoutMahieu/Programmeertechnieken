@@ -24,19 +24,20 @@ void FSM_UpdateStates(void){
 
 		if(!ContactSwitch_GetFlag()){
 			FSM_ExitLocked();
-			FSM_currentState = Opened;
-			FSM_EnterOpened();
+			FSM_currentState = Forced;
+			FSM_EnterForced();
 		}
 		break;
 	case Opened:
 		FSM_Opened();
+	case Forced:
+		FSM_Forced();
 
 		if(ContactSwitch_GetFlag()){
-			FSM_ExitOpened();
+			FSM_ExitForced();
 			FSM_currentState = Locked;
 			FSM_EnterLocked();
 		}
-
 	}
 }
 
@@ -78,7 +79,7 @@ void FSM_ExitOpened(void){
 }
 
 void FSM_EnterForced(void){
-
+	DisplayControl_AlarmScreen();
 }
 
 void FSM_Forced(void){
@@ -86,7 +87,7 @@ void FSM_Forced(void){
 }
 
 void FSM_ExitForced(void){
-
+	LCD_Clear();
 }
 
 void FSM_EnterConfig(void){
