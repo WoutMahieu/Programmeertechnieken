@@ -21,4 +21,6 @@ void UART_readData();
 
 char * UART_getData();
 
+void UART_setDataRead();
+
 #endif /* UART_H_ */

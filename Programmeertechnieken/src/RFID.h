@@ -16,6 +16,7 @@
 
 #include "Delay.h"
 #include "UART.h"
+#include "GPIO_interrupt.h"
 
 #define SIZEOF_TAG_CHECKSUM 12
 #define SIZEOF_TAG_ID 10
@@ -29,7 +30,5 @@ int RFID_checkSum(char * data);
 char* RFID_getTag(char * hexData);
 void RFID_dataHandler(int saveTag);
 
-//int getTagInRange();
-void EINT3_IRQHandler();
 
 #endif /* RFID_H_ */

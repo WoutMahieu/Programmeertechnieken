@@ -9,10 +9,9 @@
 #include "RFID.h"
 
 
-char data[SIZEOF_TAG_CHECKSUM];
-char asciiData[SIZEOF_TAG_CHECKSUM];
+char tag_checksum[SIZEOF_TAG_CHECKSUM];
+char hexData[SIZEOF_TAG_CHECKSUM];
 char tag[SIZEOF_TAG_ID];
-uint8_t dataHEX[SIZEOF_TAG_CHECKSUM];
 
 void RFID_init(){
 	//LED1 as indicator of Tag in range
@@ -48,36 +47,34 @@ char* RFID_getTagAndCheckSum(char * uartData){
 	if(uartData[0] == 0x02){
 		//don't save start of transmission (= 0x02)
 		for(int i = 0; i < SIZEOF_TAG_CHECKSUM; i++){
-			data[i] = uartData[i+1];
+			tag_checksum[i] = uartData[i+1];
 		}
 
-		printf("%s\n", data);
-		return data;
+		//printf("%s\n", data);
+		return tag_checksum;
 
 	}else{
 		printf("WARNING: invalid data\n");
 
 		for(int i = 0; i < SIZEOF_TAG_CHECKSUM; i++){
-			data[i] = '0';
+			tag_checksum[i] = '0';
 		}
-
-		printf("%s\n",data);
-		return data;
+		return tag_checksum;
 	}
 
 }
 
 char* RFID_convertASCIIHEX(char * data){
 
-	for(int i = 0; i < 12; i++){
+	for(int i = 0; i < SIZEOF_TAG_CHECKSUM; i++){
 		if((data[i] >= '0') && (data[i] <= '9')){
-			asciiData[i] = data[i] - 48;
+			hexData[i] = data[i] - 48;
 		}
 		else if((data[i] >= 'A') && (data[i] <= 'F')){
-			asciiData[i] = data[i] - 55;
+			hexData[i] = data[i] - 55;
 		}
 	}
-	return asciiData;
+	return hexData;
 }
 
 int RFID_checkSum(char * hexData){
@@ -92,13 +89,13 @@ int RFID_checkSum(char * hexData){
 		tempCheckSum2 = tempCheckSum2^hexData[i];
 	}
 
-	printf("temp1: %x\n temp2: %x\n", tempCheckSum1, tempCheckSum2);
+	//printf("temp1: %x\n temp2: %x\n", tempCheckSum1, tempCheckSum2);
 
 	char calculatedCheckSum = (tempCheckSum1 << 4) + tempCheckSum2;
-	printf("calculatedCheckSum: %x\n", calculatedCheckSum);
+	//printf("calculatedCheckSum: %x\n", calculatedCheckSum);
 
 	char receivedCheckSum = (hexData[10] << 4) + hexData[11];
-	printf("receivedCheckSum: %x\n", receivedCheckSum);
+	//printf("receivedCheckSum: %x\n", receivedCheckSum);
 
 
 	if(calculatedCheckSum == receivedCheckSum){
@@ -109,30 +106,50 @@ int RFID_checkSum(char * hexData){
 	}
 }
 
-char* RFID_getTag(char * hexData){
+char* RFID_getTag(char * tag_checksum){
 	for(int i = 0; i < SIZEOF_TAG_ID; i++){
-		tag[i] = hexData[1];
+		tag[i] = tag_checksum[i];
 	}
 	return tag;
 }
 
 void RFID_dataHandler(int saveTag){
-	//reading uartData (20 characters)
-	UART_readData();
-	printf("%s\n\n", UART_getData());
+	char * uartData; //16 chars
+	char * tag_checksum; //12 chars
+	char * hexData; //12 chars
+	char * tag; //10 chars
 
-	//UART_setFlag(0);
+	printf("\nNEW TAG READ\n");
+
+	//reading uartData (16 characters)
+	UART_readData();
+
+	//get uart data
+	uartData = UART_getData();
+
+	printf("RECEIVED DATA %s\n", uartData);
 
 	//dump unneeded sent data (STX, CR, LF and ETX)
-	char * data = RFID_getTagAndCheckSum(UART_getData());
+	tag_checksum = RFID_getTagAndCheckSum(UART_getData());
+
+	printf("CLEANED DATA %s\n", tag_checksum);
 
 	//convert received ASCII to HEX
-	char * hexdata = RFID_convertASCIIHEX(data);
+	hexData = RFID_convertASCIIHEX(tag_checksum);
+
+	printf("CONVERTED DATA ");
+	for(int i = 0; i < SIZEOF_TAG_CHECKSUM; i++){
+		printf("%x", hexData[i]);
+	}
+	printf("\n");
 
 	//checksum incorrect? Discard data
-	if(RFID_checkSum(hexdata) == 1){
+	if(RFID_checkSum(hexData) == 1){
+		printf("Checksum is correct\n");
 
-		char * tag = RFID_getTag(hexdata);
+		//take checksum out of data so it can be saved
+		tag = RFID_getTag(tag_checksum);
+		printf("%s\n", tag);
 
 		//if tag is in linkedlist
 		//printf("Open door");
@@ -142,16 +159,8 @@ void RFID_dataHandler(int saveTag){
 		}
 		//if tag is in linked list open lock
 	}
-
-
+	//data is read, set flag low
+	UART_setDataRead(0);
 }
-void EINT3_IRQHandler() {
-	Wait_ms(200);
 
-	if (((LPC_GPIOINT->IO0IntStatR >> 18) & 1) == 1) {
-		RFID_dataHandler(0);
-		LPC_GPIOINT->IO0IntClr |= (1 << 18); //
-		assert(LPC_GPIOINT->IO0IntClr == 0); //read the interrupt flag to make sure it has been set
-	}
-}
 

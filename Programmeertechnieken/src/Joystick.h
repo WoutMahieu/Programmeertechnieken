@@ -10,6 +10,9 @@
 #include "LPC17xx.h"
 #include <assert.h>
 
+#include "Delay.h"
+#include "GPIO_interrupt.h"
+
 int getJSFlags();
 
 void setJSFlags(int joystickFlags);
@@ -20,9 +23,7 @@ void JS_enable();
 
 void JS_disable();
 
-void approx_wait(uint32_t milliseconds);
-
-void EINT3_IRQHandler();
+void JS_inputHandler();
 
 
 #endif /* JOYSTICK_H_ */

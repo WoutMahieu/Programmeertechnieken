@@ -68,14 +68,14 @@ void UART_readData(){
 	IIR &= 0x07;
 
 	//Check if interruptid = RDA (Receive Data Available)
-	if(IIR == 0x02){
+	if(IIR == 0x02 && dataRead == 0){
 		//used for debugging
 		//printf("Data available\n");
 
 		for(int i = 0; i < SIZEOF_UART_DATA; i++){
 			uartData[i] = UART_getCharacter();
 			//used for debugging
-			//printf("%c\n", tag[i]);
+			//printf("%c\n", uartData[i]);
 		}
 		dataRead = 1;
 		//clear fifo
@@ -85,4 +85,8 @@ void UART_readData(){
 
 char * UART_getData(){
 	return uartData;
+}
+
+void UART_setDataRead(int a){
+	dataRead = a;
 }
