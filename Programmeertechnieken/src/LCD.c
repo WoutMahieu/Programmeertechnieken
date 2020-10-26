@@ -131,15 +131,7 @@ void LCD_Pixel(uint8_t x, uint8_t y, uint8_t c){
 	}
 }
 
-void LCD_Line(uint8_t x1, uint8_t y1, uint8_t x2, uint8_t y2, uint8_t c){
-	float m = (float)(y2 - y1) / (x2 - x1);
-
-	for(uint8_t i = x1; i < (x2 - x1); i++){
-		LCD_Pixel(i, (uint8_t)(m * i - m * x1 + y1), c);
-	}
-}
-
-void LCD_Square(uint8_t x1, uint8_t y1, uint8_t x2, uint8_t y2, uint8_t c){
+void LCD_Rect(uint8_t x1, uint8_t y1, uint8_t x2, uint8_t y2, uint8_t c){
 	for(uint8_t x = x1; x < x2; x++){
 		for(uint8_t y = y1; y < y2; y++){
 			LCD_Pixel(x, y, c);
