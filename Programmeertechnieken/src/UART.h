@@ -19,8 +19,10 @@ char UART_getCharacter();
 
 void UART_readData();
 
-char * UART_getData();
+const char * UART_getData();
 
 void UART_setDataRead();
+
+void UART_clearFIFO();
 
 #endif /* UART_H_ */

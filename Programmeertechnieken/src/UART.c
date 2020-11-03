@@ -7,9 +7,8 @@
 
 #include "UART.h"
 
-char uartData[SIZEOF_UART_DATA];
+char uartData[SIZEOF_UART_DATA + 1];
 uint8_t dataRead = 0;
-uint8_t IIR;
 
 void UART_init(){
 
@@ -36,9 +35,10 @@ void UART_init(){
 	LPC_UART2->LCR &= ~(1 << 7);
 
 	//4. UART FIFO: enable FIFO
-	LPC_UART2->FCR |= 1; //fifo enable
+	LPC_UART2->FCR |= 1;
 
 	//5. Pins: Select UART pins through PINSEL registers and pin modes through PINMODE registers
+	//This pin can only be active when an interrupt occurs
 	LPC_PINCON->PINSEL0 |= (1 << 22); // p0.11: select RXD2 as pin function
 	LPC_PINCON->PINMODE0 |= (1 << 23); // p0.11: neither pull-up nor pull-down
 
@@ -59,34 +59,27 @@ char UART_getCharacter(){
 }
 
 void UART_readData(){
-	IIR = LPC_UART2->IIR;
-
-	//Shifting out the interruptstatus bit
-	IIR >>= 1;
-
-	//Masking unnecessary
-	IIR &= 0x07;
-
 	//Check if interruptid = RDA (Receive Data Available)
-	if(IIR == 0x02 && dataRead == 0){
-		//used for debugging
-		//printf("Data available\n");
-
+	if(dataRead == 0){
 		for(int i = 0; i < SIZEOF_UART_DATA; i++){
 			uartData[i] = UART_getCharacter();
 			//used for debugging
 			//printf("%c\n", uartData[i]);
 		}
 		dataRead = 1;
-		//clear fifo
-		LPC_UART2->FCR |= (1 << 1);
+		UART_clearFIFO();
 	}
 }
 
-char * UART_getData(){
+const char * UART_getData(){
 	return uartData;
 }
 
 void UART_setDataRead(int a){
 	dataRead = a;
+}
+
+void UART_clearFIFO(){
+	//clear fifo
+	LPC_UART2->FCR |= (1 << 1);
 }
