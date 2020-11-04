@@ -50,7 +50,7 @@ void LCD_Cmd(uint8_t data){
 }
 
 void LCD_Data(uint8_t data){
-	LPC_GPIO0->FIOSET |= (1 << 6); //A0 = 0 => data
+	LPC_GPIO0->FIOSET |= (1 << 6); //A0 = 1 => data
 	SSP_Write(data);
 	LPC_GPIO0->FIOCLR |= (1 << 6); //A0 = 0 => command
 }

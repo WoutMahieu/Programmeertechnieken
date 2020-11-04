@@ -8,7 +8,8 @@
 ===============================================================================
 */
 #include "FSM.h"
-#include "LCD.h"
+#include "Delay.h"
+#include "Buzzer.h"
 
 int main(void) {
 

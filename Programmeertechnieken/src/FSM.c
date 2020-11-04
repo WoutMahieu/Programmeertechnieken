@@ -48,6 +48,7 @@ void FSM_Init(void){
 	LCD_Update();
 
 	ContactSwitch_Init();
+	Buzzer_Init();
 }
 
 void FSM_ExitInit(void){
@@ -80,6 +81,8 @@ void FSM_ExitOpened(void){
 
 void FSM_EnterForced(void){
 	DisplayControl_AlarmScreen();
+	Buzzer_Frequency(2500);
+	Buzzer_Enable();
 }
 
 void FSM_Forced(void){
@@ -88,6 +91,7 @@ void FSM_Forced(void){
 
 void FSM_ExitForced(void){
 	LCD_Clear();
+	Buzzer_Disable();
 }
 
 void FSM_EnterConfig(void){
