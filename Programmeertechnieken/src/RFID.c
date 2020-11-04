@@ -59,6 +59,10 @@ void RFID_addTag(){
 	UART_setDataRead(0);
 }
 
+const char* RFID_deleteTag(const char* toDelete){
+	LinkedL_delete(&startPtrRFID, toDelete);
+}
+
 void RFID_driveLED(){
 	Wait_ms(200);
 
@@ -142,15 +146,9 @@ int RFID_checkSum(const char * hexData){
 }
 
 const char* RFID_getTagID(const char * tagChecksum){
-	printf("RFID_getTagID: Before copying\n");
-	RFID_printLL();
 
+	//copy the first 10 chars of tagChecksum into tagID
 	memcpy(tagID, tagChecksum, SIZEOF_TAG_ID);
-
-	printf("RFID_getTagID: After copying\n");
-	RFID_printLL();
-	//for debugging purposes
-	//printf("RFID_getTagData: %s\n", tag);
 	return tagID;
 }
 
@@ -185,14 +183,8 @@ void RFID_dataHandler(){
 		if(RFID_checkSum(hexData) == 1){
 			printf("Checksum is correct\n");
 
-			printf("Datahandler: Before copying\n");
-			RFID_printLL();
-
 			//take checksum out of data so it can be saved
 			RFID_getTagID(checksumData);
-
-			printf("Datahandler: After copying\n");
-			RFID_printLL();
 		}
 		printf("-----------------------------------------------------------\n");
 	}

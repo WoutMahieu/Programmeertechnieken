@@ -55,26 +55,25 @@ const char* LinkedL_delete(LinkedList_t ** startPtrPtr, const char * toDelete){
 
 	//check if value is already in the linked list
 	while(walkingPtr != NULL && found == 0){
-
-		if(walkingPtr->value != toDelete){
+		if(strcmp((walkingPtr->value), toDelete) != 0){
 			prevWalkingPtr = walkingPtr;
 			walkingPtr = walkingPtr->nextPtr;
 		}
-		else if(walkingPtr->value == toDelete){
-
+		else if(strcmp((walkingPtr->value), toDelete) == 0){
 			if(prevWalkingPtr == NULL){
 				temp = walkingPtr;
 				*startPtrPtr = walkingPtr->nextPtr;
 				found = 1;
+				return temp->value;
 			}
 			else{
 				temp = walkingPtr;
 				prevWalkingPtr->nextPtr = walkingPtr->nextPtr;
 				found = 1;
+				return temp->value;
 			}
 		}
 	}
-	return temp->value;
 	free(temp);
 }
 
@@ -82,14 +81,10 @@ int LinkedL_contains(LinkedList_t ** startPtrPtr, const char * value){
 	LinkedList_t* walkingPtr = *startPtrPtr;
 	int found = 0;
 
-	//for debugging purposes
-	//printf("Value to look up %s\n", value);
-	LinkedL_printList(*startPtrPtr);
-
 	printf("List of comparisons\n");
 	//check if value is in the linked list
  	while(walkingPtr != NULL && found == 0){
-		printf("%s <==> %s\n", walkingPtr->value, value);
+		printf("%s <==> %s\n", value, walkingPtr->value);
 		if(strcmp((walkingPtr->value), value) == 0){
 			//for debugging purposes
 			//printf("Value found in the list %s\n", walkingPtr->value);

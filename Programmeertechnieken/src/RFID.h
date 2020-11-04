@@ -27,19 +27,20 @@ void RFID_init();
 
 void RFID_driveLED();
 
-const char* RFID_getTagAndCheckSumData(const char * uartData);
-const char* RFID_convertASCIIHEX(const char * data);
-int RFID_checkSum(const char * data);
-const char* RFID_getTagData(const char * hexData);
-const char* RFID_getTagID(const char * tag_checksum);
+const char* RFID_getTagAndCheckSumData(const char *);
+const char* RFID_convertASCIIHEX(const char *);
+int RFID_checkSum(const char *);
+const char* RFID_getTagID(const char *);
+
 void RFID_dataHandler();
-
 int RFID_lockHandler();
-void RFID_addTag();
 
-void RFID_addTagLL(const char* tag);
-const char* RFID_deleteTagLL(const char* tag);
-int RFID_containsTagLL(const char* tag);
+void RFID_addTag();
+const char* RFID_deleteTag(const char *);
+
+void RFID_addTagLL(const char *);
+const char* RFID_deleteTagLL(const char *);
+int RFID_containsTagLL(const char *);
 void RFID_printLL();
 
 #endif /* RFID_H_ */
