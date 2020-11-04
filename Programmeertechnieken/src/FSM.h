@@ -11,6 +11,7 @@
 #include "LCD.h"
 #include "ContactSwitch.h"
 #include "Buzzer.h"
+#include "RFID.h"
 #include "DisplayControl.h"
 #include "Delay.h"
 

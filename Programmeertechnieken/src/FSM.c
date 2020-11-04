@@ -49,6 +49,7 @@ void FSM_Init(void){
 
 	ContactSwitch_Init();
 	Buzzer_Init();
+	RFID_Init();
 }
 
 void FSM_ExitInit(void){
