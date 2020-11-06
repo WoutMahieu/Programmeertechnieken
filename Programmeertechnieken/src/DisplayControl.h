@@ -10,10 +10,11 @@
 
 #include "LCD.h"
 
+void DisplayControl_InitScreen(void);
 void DisplayControl_LockedScreen(void);
 void DisplayControl_OpenedScreen(void);
 void DisplayControl_AlarmScreen(void);
-void Displaycontrol_ConfigScreen(void);
+void Displaycontrol_ConfigScreen(int pos);
 
 void DisplayControl_PrintUpperLock(int x, int y);
 void DisplayControl_PrintLowerLock(int x, int y);

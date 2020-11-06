@@ -7,6 +7,12 @@
 
 #include "DisplayControl.h"
 
+void DisplayControl_InitScreen(void){
+	LCD_Cursor(0, 0);
+	LCD_Print("Initializing");
+	LCD_Update();
+}
+
 void DisplayControl_LockedScreen(void){
 	DisplayControl_PrintLowerLock(3,12);
 	DisplayControl_PrintUpperLock(4, 3);
@@ -30,7 +36,7 @@ void DisplayControl_AlarmScreen(void){
 	LCD_Update();
 }
 
-void Displaycontrol_ConfigScreen(void){
+void Displaycontrol_ConfigScreen(int pos){
 
 }
 
