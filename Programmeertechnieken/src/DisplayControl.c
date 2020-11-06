@@ -8,12 +8,14 @@
 #include "DisplayControl.h"
 
 void DisplayControl_InitScreen(void){
+	LCD_Clear();
 	LCD_Cursor(0, 0);
 	LCD_Print("Initializing");
 	LCD_Update();
 }
 
 void DisplayControl_LockedScreen(void){
+	LCD_Clear();
 	DisplayControl_PrintLowerLock(3,12);
 	DisplayControl_PrintUpperLock(4, 3);
 	LCD_Cursor(23, 20);
@@ -22,6 +24,7 @@ void DisplayControl_LockedScreen(void){
 }
 
 void DisplayControl_OpenedScreen(void){
+	LCD_Clear();
 	DisplayControl_PrintLowerLock(3,12);
 	DisplayControl_PrintUpperLock(17, 3);
 	LCD_Cursor(23, 20);
@@ -30,6 +33,7 @@ void DisplayControl_OpenedScreen(void){
 }
 
 void DisplayControl_AlarmScreen(void){
+	LCD_Clear();
 	DisplayControl_PrintAlarm(3,3);
 	LCD_Cursor(23,20);
 	LCD_Print("ALARM");
@@ -37,7 +41,7 @@ void DisplayControl_AlarmScreen(void){
 }
 
 void Displaycontrol_ConfigScreen(int pos){
-
+	LCD_Clear();
 }
 
 void DisplayControl_PrintUpperLock(int x, int y){
