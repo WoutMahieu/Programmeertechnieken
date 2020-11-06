@@ -71,7 +71,7 @@ void FSM_UpdateStates(void){
 	case Config:
 		FSM_Config();
 
-		//Check for joystick center, if '1' => check contactswitch, if '1' => Locked, else => Opened
+		//Check for joystick center => Opened
 		break;
 	}
 }
