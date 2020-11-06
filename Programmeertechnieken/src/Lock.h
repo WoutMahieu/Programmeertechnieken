@@ -10,8 +10,8 @@
 
 #include "LPC17xx.h"
 
-void Lock_init();
+void Lock_Init();
 
-void Lock_driveLock(int bool);
+void Lock_DriveLock(int bool);
 
 #endif /* LOCK_H_ */
