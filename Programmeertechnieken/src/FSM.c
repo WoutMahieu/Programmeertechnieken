@@ -16,7 +16,7 @@ void FSM_UpdateStates(void){
 		FSM_Init();
 
 		//Check contactswitch, if '1' => Locked, else => Opened
-		if(ContactSwitch_GetFlag()){
+		if(0){
 			FSM_ExitInit();
 			FSM_currentState = Locked;
 			FSM_EnterLocked();
@@ -55,7 +55,7 @@ void FSM_UpdateStates(void){
 
 		//Check if valid tag scanned, if !valid => nothing, else check contactswitch, if '1' => Locked, else => Opened
 		if(0){
-			if(ContactSwitch_GetFlag()){
+			if(0){
 				FSM_ExitForced();
 				FSM_CurrentState = Locked;
 				FSM_EnterLocked();
