@@ -77,7 +77,7 @@ void FSM_UpdateStates(void){
 }
 
 void FSM_Init(void){
-	//Init all hardware & show initialization message on screen !!!! set LCD_autoUpdate = 0; !!!!!!
+	//Init all hardware & show initialization message on screen !!!! set LCD_autoUpdate = 0; !!!!
 	DisplayControl_InitScreen();
 }
 
