@@ -8,11 +8,10 @@
 #ifndef FSM_H_
 #define FSM_H_
 
-#include "LCD.h"
 #include "ContactSwitch.h"
-#include "Buzzer.h"
 #include "RFID.h"
 #include "DisplayControl.h"
+#include "OutputControl.h"
 #include "Delay.h"
 
 extern enum states;
@@ -31,7 +30,7 @@ void FSM_EnterForced(void);
 void FSM_Forced(void);
 void FSM_ExitForced(void);
 void FSM_EnterConfig(void);
-void FSM_Condig(void);
+void FSM_Config(void);
 void FSM_ExitConfig(void);
 
 #endif /* FSM_H_ */
