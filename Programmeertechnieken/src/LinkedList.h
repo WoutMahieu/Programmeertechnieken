@@ -17,13 +17,13 @@ typedef struct LinkedList{
 	struct LinkedList * nextPtr;
 }LinkedList_t;
 
-void LinkedL_printList(LinkedList_t* startPtr);
+void LinkedL_PrintList(LinkedList_t* startPtr);
 
-void LinkedL_push(LinkedList_t ** startPtrPtr, const char * value);
+void LinkedL_Push(LinkedList_t ** startPtrPtr, const char * value);
 
-const char * LinkedL_delete(LinkedList_t ** startPtrPtr, const char * value);
+const char * LinkedL_Delete(LinkedList_t ** startPtrPtr, const char * value);
 
-int LinkedL_contains(LinkedList_t ** startPtrPtr, const char * value);
+int LinkedL_Contains(LinkedList_t ** startPtrPtr, const char * value);
 
 //char * pop(LinkedList * head);
 //

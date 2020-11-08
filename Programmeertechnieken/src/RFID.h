@@ -23,24 +23,24 @@
 #define SIZEOF_TAG_CHECKSUM 12
 #define SIZEOF_TAG_ID 10
 
-void RFID_init();
+void RFID_Init();
 
-void RFID_driveLED();
+void RFID_DriveLED();
 
-const char* RFID_getTagAndCheckSumData(const char *);
-const char* RFID_convertASCIIHEX(const char *);
-int RFID_checkSum(const char *);
-const char* RFID_getTagID(const char *);
+const char* RFID_GetTagAndCheckSumData(const char *);
+const char* RFID_ConvertASCIIHEX(const char *);
+int RFID_CheckSum(const char *);
+const char* RFID_GetTagID(const char *);
 
-void RFID_dataHandler();
-int RFID_lockHandler();
+void RFID_DataHandler();
+int RFID_LockHandler();
 
-void RFID_addTag();
-const char* RFID_deleteTag(const char *);
+void RFID_AddTag();
+const char* RFID_DeleteTag(const char *);
 
-void RFID_addTagLL(const char *);
-const char* RFID_deleteTagLL(const char *);
-int RFID_containsTagLL(const char *);
-void RFID_printLL();
+void RFID_AddTagLL(const char *);
+const char* RFID_DeleteTagLL(const char *);
+int RFID_ContainsTagLL(const char *);
+void RFID_PrintLL();
 
 #endif /* RFID_H_ */

@@ -21,7 +21,7 @@ char tagID[SIZEOF_TAG_ID + 1] = {0};
 
 LinkedList_t* startPtrRFID = NULL;
 
-void RFID_init(){
+void RFID_Init(){
 	//LED1 as indicator of Tag in range
 	LPC_GPIO1->FIODIR |= (1 << 18); //select p1.18 (LED 1) and write 1 to make it an output
 
@@ -39,31 +39,31 @@ void RFID_init(){
 	//https://binaryupdates.com/gpio-in-cortex-m3-lpc1768-microcontroller/2/
 }
 
-void RFID_addTag(){
+void RFID_AddTag(){
 
 	//DIP 11 as an output so there can't be an interrupt triggered
-	LPC_GPIO0->FIODIR |= (1 << 18); //select p0.18 and write 0 to make it an input
+	LPC_GPIO0->FIODIR |= (1 << 18);
 
 	printf("Bring your tag in range of the RFID reader within the upcoming 5 seconds\n");
-	UART_clearFIFO();
+	UART_ClearFIFO();
 	Wait_s(5);
-	RFID_dataHandler();
+	RFID_DataHandler();
 
 	if(strcmp(tagID, "") != 0){
-		RFID_addTagLL(tagID);
+		RFID_AddTagLL(tagID);
 	}
 
 	//DIP 11 as an input
 	LPC_GPIO0->FIODIR &= ~(1 << 18);
 	//setting flag so new UART can be read
-	UART_setDataRead(0);
+	UART_SetDataRead(0);
 }
 
-const char* RFID_deleteTag(const char* toDelete){
-	LinkedL_delete(&startPtrRFID, toDelete);
+const char* RFID_DeleteTag(const char* toDelete){
+	LinkedL_Delete(&startPtrRFID, toDelete);
 }
 
-void RFID_driveLED(){
+void RFID_DriveLED(){
 	Wait_ms(200);
 
 	//if tag is in range turn LED1 on, otherwise turn LED1 off;
@@ -75,7 +75,7 @@ void RFID_driveLED(){
 	}
 }
 
-const char* RFID_getTagAndCheckSumData(const char * uartData){
+const char* RFID_GetTagAndCheckSumData(const char * uartData){
 	//check for start of transmission (=0x02), otherwise data is discarded;
 	if(uartData[0] == 0x02){
 		//don't save start of transmission (= 0x02)
@@ -96,7 +96,7 @@ const char* RFID_getTagAndCheckSumData(const char * uartData){
 	return checksumData;
 }
 
-const char* RFID_convertASCIIHEX(const char * asciiData){
+const char* RFID_ConvertASCIIHEX(const char * asciiData){
 	for(int i = 0; i < SIZEOF_TAG_CHECKSUM; i++){
 		if((asciiData[i] >= '0') && (asciiData[i] <= '9')){
 			hexData[i] = asciiData[i] - 48;
@@ -113,7 +113,7 @@ const char* RFID_convertASCIIHEX(const char * asciiData){
 	return hexData;
 }
 
-int RFID_checkSum(const char * hexData){
+int RFID_CheckSum(const char * hexData){
 	char tempCheckSum1 = hexData[0];
 	char tempCheckSum2 = hexData[1];
 
@@ -145,33 +145,33 @@ int RFID_checkSum(const char * hexData){
 	}
 }
 
-const char* RFID_getTagID(const char * tagChecksum){
+const char* RFID_GetTagID(const char * tagChecksum){
 
 	//copy the first 10 chars of tagChecksum into tagID
 	memcpy(tagID, tagChecksum, SIZEOF_TAG_ID);
 	return tagID;
 }
 
-void RFID_dataHandler(){
+void RFID_DataHandler(){
 	printf("-----------------------------------------------------------\n");
 
 	printf("NEW TAG READ\n");
 	//reading uartData (16 characters)
-	UART_readData();
+	UART_ReadData();
 
 	//get uart data
-	strcpy(receivedData,  UART_getData());
+	strcpy(receivedData,  UART_GetData());
 	printf("RECEIVED DATA %s\n", receivedData);
 
 	//go further if received data is valid
 	if(strcmp(receivedData, "") != 0){
 
 		//dump unneeded sent data (STX, CR, LF and ETX)
-		strcpy(checksumData, RFID_getTagAndCheckSumData(receivedData));
+		strcpy(checksumData, RFID_GetTagAndCheckSumData(receivedData));
 		printf("CLEANED DATA %s\n", checksumData);
 
 		//convert received ASCII to HEX
-		strcpy(hexData, RFID_convertASCIIHEX(checksumData));
+		strcpy(hexData, RFID_ConvertASCIIHEX(checksumData));
 
 		printf("CONVERTED DATA ");
 		for(int i = 0; i < SIZEOF_TAG_CHECKSUM; i++){
@@ -180,11 +180,11 @@ void RFID_dataHandler(){
 		printf("\n");
 
 		//checksum incorrect? return array of '0'
-		if(RFID_checkSum(hexData) == 1){
+		if(RFID_CheckSum(hexData) == 1){
 			printf("Checksum is correct\n");
 
 			//take checksum out of data so it can be saved
-			RFID_getTagID(checksumData);
+			RFID_GetTagID(checksumData);
 		}
 		printf("-----------------------------------------------------------\n");
 	}
@@ -197,16 +197,16 @@ void RFID_dataHandler(){
 	}
 }
 
-int RFID_lockHandler(){
+int RFID_LockHandler(){
 	int lock = 0; //0 = closed, 1 = opened
-	RFID_dataHandler();
+	RFID_DataHandler();
 
 	if(strcmp(tagID, "") != 0){
 		const char* tagLockHandler = tagID;
 
 		printf("tagLockHandler: %s\n", tagLockHandler);
 
-		if(RFID_containsTagLL(tagLockHandler) == 1){
+		if(RFID_ContainsTagLL(tagLockHandler) == 1){
 			printf("Tag is valid, lock opened\n");
 			lock = 1;
 		}else{
@@ -214,29 +214,29 @@ int RFID_lockHandler(){
 			lock = 0;
 		}
 
-		RFID_printLL();
+		RFID_PrintLL();
 	}
 	else{
 		printf("Received data was invalid\n");
 	}
 
 	//setting flag so new UART can be read
-	UART_setDataRead(0);
+	UART_SetDataRead(0);
 	return lock;
 }
 
-void RFID_addTagLL(const char* tag){
-	LinkedL_push(&startPtrRFID, tag);
+void RFID_AddTagLL(const char* tag){
+	LinkedL_Push(&startPtrRFID, tag);
 }
 
-const char* RFID_deleteTagLL(const char* tag){
-	return LinkedL_delete(&startPtrRFID, tag);
+const char* RFID_DeleteTagLL(const char* tag){
+	return LinkedL_Delete(&startPtrRFID, tag);
 }
 
-int RFID_containsTagLL(const char* tag){
-	return LinkedL_contains(&startPtrRFID, tag);
+int RFID_ContainsTagLL(const char* tag){
+	return LinkedL_Contains(&startPtrRFID, tag);
 }
 
-void RFID_printLL(){
-	LinkedL_printList(startPtrRFID);
+void RFID_PrintLL(){
+	LinkedL_PrintList(startPtrRFID);
 }

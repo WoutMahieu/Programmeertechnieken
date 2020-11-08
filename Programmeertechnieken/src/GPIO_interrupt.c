@@ -10,10 +10,10 @@
 void EINT3_IRQHandler() {
 
 	if (((LPC_GPIOINT->IO0IntStatR >> 18) & 1) == 1) {
-		RFID_lockHandler(); //tag doesn't have to be saved => param = 0
+		RFID_LockHandler(); //tag doesn't have to be saved => param = 0
 		LPC_GPIOINT->IO0IntClr |= (1 << 18); //clear interrupt bit
 		assert(LPC_GPIOINT->IO0IntClr == 0); //read the interrupt flag to make sure it has been set
 	}
 
-	JS_inputHandler();
+	JS_InputHandler();
 }

@@ -13,16 +13,16 @@
 
 #define SIZEOF_UART_DATA 16
 
-void UART_init();
+void UART_Init();
 
-char UART_getCharacter();
+char UART_GetCharacter();
 
-void UART_readData();
+void UART_ReadData();
 
-const char * UART_getData();
+const char * UART_GetData();
 
-void UART_setDataRead();
+void UART_SetDataRead();
 
-void UART_clearFIFO();
+void UART_ClearFIFO();
 
 #endif /* UART_H_ */

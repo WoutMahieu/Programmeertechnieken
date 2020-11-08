@@ -10,7 +10,7 @@
 char uartData[SIZEOF_UART_DATA + 1];
 uint8_t dataRead = 0;
 
-void UART_init(){
+void UART_Init(){
 
 	//1. Power: set bit for PCUART 2
 	LPC_SC->PCONP |= (1 << 24);
@@ -50,7 +50,7 @@ void UART_init(){
 	LPC_UART2->LCR |= 3;
 }
 
-char UART_getCharacter(){
+char UART_GetCharacter(){
 	//Wait if Receiver Data Ready is not empty in Line Status Register
 	//while ((LPC_UART2->LSR & 1) == 0);
 
@@ -58,28 +58,28 @@ char UART_getCharacter(){
 	return LPC_UART2->RBR;
 }
 
-void UART_readData(){
+void UART_ReadData(){
 	//Check if interruptid = RDA (Receive Data Available)
 	if(dataRead == 0){
 		for(int i = 0; i < SIZEOF_UART_DATA; i++){
-			uartData[i] = UART_getCharacter();
+			uartData[i] = UART_GetCharacter();
 			//used for debugging
 			//printf("%c\n", uartData[i]);
 		}
 		dataRead = 1;
-		UART_clearFIFO();
+		UART_ClearFIFO();
 	}
 }
 
-const char * UART_getData(){
+const char * UART_GetData(){
 	return uartData;
 }
 
-void UART_setDataRead(int a){
+void UART_SetDataRead(int a){
 	dataRead = a;
 }
 
-void UART_clearFIFO(){
+void UART_ClearFIFO(){
 	//clear fifo
 	LPC_UART2->FCR |= (1 << 1);
 }

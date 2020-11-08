@@ -7,7 +7,7 @@
 
 #include "LinkedList.h"
 
-void LinkedL_printList(LinkedList_t* startPtr)
+void LinkedL_PrintList(LinkedList_t* startPtr)
 {
 	LinkedList_t* walkingPtr = startPtr;
 
@@ -27,7 +27,7 @@ void LinkedL_printList(LinkedList_t* startPtr)
 	}
 }
 
-void LinkedL_push(LinkedList_t ** startPtrPtr, const char * value){
+void LinkedL_Push(LinkedList_t ** startPtrPtr, const char * value){
 
 	//if value is already in the list, it doesn't have to be pushed
 	if(LinkedL_contains(startPtrPtr, value) == 0){
@@ -47,7 +47,7 @@ void LinkedL_push(LinkedList_t ** startPtrPtr, const char * value){
 	LinkedL_printList(*startPtrPtr);
 }
 
-const char* LinkedL_delete(LinkedList_t ** startPtrPtr, const char * toDelete){
+const char* LinkedL_Delete(LinkedList_t ** startPtrPtr, const char * toDelete){
 	LinkedList_t* walkingPtr = *startPtrPtr;
 	LinkedList_t* prevWalkingPtr = NULL;
 	LinkedList_t* temp = NULL;
@@ -77,7 +77,7 @@ const char* LinkedL_delete(LinkedList_t ** startPtrPtr, const char * toDelete){
 	free(temp);
 }
 
-int LinkedL_contains(LinkedList_t ** startPtrPtr, const char * value){
+int LinkedL_Contains(LinkedList_t ** startPtrPtr, const char * value){
 	LinkedList_t* walkingPtr = *startPtrPtr;
 	int found = 0;
 
