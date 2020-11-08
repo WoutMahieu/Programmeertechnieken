@@ -13,6 +13,7 @@
 #include "DisplayControl.h"
 #include "OutputControl.h"
 #include "Delay.h"
+#include "HardwareInit.h"
 
 extern enum states;
 extern enum currentState;

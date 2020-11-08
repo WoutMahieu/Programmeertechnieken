@@ -1,4 +1,4 @@
-/*
+ /*
  * OutputControl.c
  *
  *  Created on: 06 Nov 2020
@@ -12,7 +12,7 @@ void OutputControl_Lock(void){
 	StatusLED_Green(0);
 	Buzzer_Disable();
 
-	Lock_Drivelock(1);
+	Lock_DriveLock(1);
 	StatusLED_Blue(1);
 }
 
@@ -21,7 +21,7 @@ void OutputControl_Unlock(void){
 	StatusLED_Blue(0);
 	Buzzer_Disable();
 
-	Lock_Drivelock(0);
+	Lock_DriveLock(0);
 	StatusLED_Green(1);
 }
 

@@ -18,23 +18,23 @@
 uint8_t joystickFlags = 0;
 uint8_t enabled = 0;
 
-int JS_getFlags(){
+int Joystick_GetFlags(){
 	return joystickFlags;
 }
 
-void JS_SetFlags(int a){
+void Joystick_SetFlags(int a){
 	joystickFlags = a;
 }
 
-void JS_Enable(){
+void Joystick_Enable(){
 	enabled = 1;
 }
 
-void JS_Disable(){
+void Joystick_Disable(){
 	enabled = 0;
 }
 
-void JS_Init(){
+void Joystick_Init(){
 
 	//Setting Joystick GPIO pins as inputs
 	LPC_GPIO0->FIODIR &= ~(7 << 15); //select p0.15, p0.16 and p0.17 (JOYSTICK LEFT, CENTER and DOWN) and write 0 to make it an input
@@ -53,7 +53,7 @@ void JS_Init(){
 	//https://binaryupdates.com/gpio-in-cortex-m3-lpc1768-microcontroller/2/
 }
 
-void JS_InputHandler() {
+void Joystick_InputHandler() {
 	if(enabled == 1){
 
 		//debounce: After the first edge, wait for a specific amount of time before reading the actual value.

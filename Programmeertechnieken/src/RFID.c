@@ -19,6 +19,9 @@ char checksumData[SIZEOF_TAG_CHECKSUM + 1] = {0};
 char hexData[SIZEOF_TAG_CHECKSUM + 1] = {0};
 char tagID[SIZEOF_TAG_ID + 1] = {0};
 
+char* firstTag = "6700999FF2";
+
+//list of tags
 LinkedList_t* startPtrRFID = NULL;
 
 void RFID_Init(){
@@ -34,15 +37,27 @@ void RFID_Init(){
 	//enable GPIO interrupts for p0.18
 	LPC_GPIOINT->IO0IntEnR |= (1 << 18);
 
+	//adding a tag so there can be tags added or deleted
+	RFID_AddTag(firstTag);
+
 	NVIC_EnableIRQ(EINT3_IRQn); //enable External Interrupt 0 Interrupt
 	//note: we use EINT3 instead of EINT0 (doesn't work?!): all GPIO interrupt are connected to EINT3 interrupt source
 	//https://binaryupdates.com/gpio-in-cortex-m3-lpc1768-microcontroller/2/
 }
 
-void RFID_AddTag(){
+void RFID_EnableTagInRangeInterrupt(){
+	//DIP 11 as an input so interrupts can be triggerd
+	LPC_GPIO0->FIODIR &= ~(1 << 18);
+}
 
+void RFID_DisableTagInRangeInterrupt(){
 	//DIP 11 as an output so there can't be an interrupt triggered
 	LPC_GPIO0->FIODIR |= (1 << 18);
+}
+
+void RFID_AddTag(){
+
+	RFID_DisableTagInRangeInterrupt();
 
 	printf("Bring your tag in range of the RFID reader within the upcoming 5 seconds\n");
 	UART_ClearFIFO();
@@ -53,14 +68,14 @@ void RFID_AddTag(){
 		RFID_AddTagLL(tagID);
 	}
 
-	//DIP 11 as an input
-	LPC_GPIO0->FIODIR &= ~(1 << 18);
+	RFID_EnableTagInRangeInterrupt();
+
 	//setting flag so new UART can be read
 	UART_SetDataRead(0);
 }
 
 const char* RFID_DeleteTag(const char* toDelete){
-	LinkedL_Delete(&startPtrRFID, toDelete);
+	return LinkedL_Delete(&startPtrRFID, toDelete);
 }
 
 void RFID_DriveLED(){

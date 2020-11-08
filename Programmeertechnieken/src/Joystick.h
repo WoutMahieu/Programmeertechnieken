@@ -13,17 +13,17 @@
 #include "Delay.h"
 #include "GPIO_interrupt.h"
 
-int JS_getFlags();
+int Joystick_GetFlags();
 
-void JS_SetFlags(int joystickFlags);
+void Joystick_SetFlags(int joystickFlags);
 
-void JS_Init();
+void Joystick_Init();
 
-void JS_Enable();
+void Joystick_Enable();
 
-void JS_Disable();
+void Joystick_Disable();
 
-void JS_InputHandler();
+void Joystick_InputHandler();
 
 
 #endif /* JOYSTICK_H_ */
