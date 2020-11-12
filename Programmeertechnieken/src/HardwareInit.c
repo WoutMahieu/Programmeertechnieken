@@ -10,7 +10,7 @@
 
 void HardwareInit(){
 	Buzzer_Init();
-	ContactSwitc_Init();
+	ContactSwitch_Init();
 	DisplayControl_InitScreen();
 	Joystick_Init();
 	LCD_Init();

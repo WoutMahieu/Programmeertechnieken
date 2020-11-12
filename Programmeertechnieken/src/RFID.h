@@ -19,11 +19,15 @@
 #include "GPIO_interrupt.h"
 #include "LinkedList.h"
 #include "Joystick.h"
+#include "InputControl.h"
 
 #define SIZEOF_TAG_CHECKSUM 12
 #define SIZEOF_TAG_ID 10
 
 void RFID_Init();
+
+void RFID_EnableTagInRangeInterrupt();
+void RFID_DisableTagInRangeInterrupt();
 
 void RFID_DriveLED();
 
@@ -33,7 +37,7 @@ int RFID_CheckSum(const char *);
 const char* RFID_GetTagID(const char *);
 
 void RFID_DataHandler();
-int RFID_LockHandler();
+void RFID_LockHandler();
 
 void RFID_AddTag();
 const char* RFID_DeleteTag(const char *);

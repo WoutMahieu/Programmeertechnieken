@@ -8,22 +8,22 @@
 #include "FSM.h"
 
 enum states {Init, Locked, Opened, Forced, Config};
-enum states FSM_currentState = Init;
+enum states FSM_CurrentState = Init;
 
 void FSM_UpdateStates(void){
-	switch(FSM_currentState){
+	switch(FSM_CurrentState){
 	case Init:
 		FSM_Init();
 
 		//Check contactswitch, if '1' => Locked, else => Opened
 		if(0){
 			FSM_ExitInit();
-			FSM_currentState = Locked;
+			FSM_CurrentState = Locked;
 			FSM_EnterLocked();
 		}
 		else{
 			FSM_ExitInit();
-			FSM_currentState = Opened;
+			FSM_CurrentState = Opened;
 			FSM_EnterOpened();
 		}
 
@@ -32,6 +32,20 @@ void FSM_UpdateStates(void){
 		FSM_Locked();
 
 		//Check contactswitch, if '1' => Forced, else check for valid RFID: if valid => Opened else nothing
+		if(0){
+			FSM_ExitLocked();
+			FSM_CurrentState = Forced;
+			FSM_EnterForced();
+		}
+		else{
+			RFID_EnableTagInRangeInterrupt();
+			//wait until lock is opened by a valid RFID-tag
+			while(Lock_GetStatus() == 0){}
+			FSM_ExitLocked();
+			FSM_CurrentState = Opened;
+			FSM_EnterOpened();
+		}
+
 
 		break;
 	case Opened:
@@ -78,7 +92,8 @@ void FSM_UpdateStates(void){
 
 void FSM_Init(void){
 	//Init all hardware & show initialization message on screen !!!! set LCD_autoUpdate = 0; !!!!
-	Hardware_Init();
+	HardwareInit();
+	RFID_DisableTagInRangeInterrupt();
 }
 
 void FSM_ExitInit(void){}

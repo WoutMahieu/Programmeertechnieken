@@ -30,7 +30,7 @@ void LinkedL_PrintList(LinkedList_t* startPtr)
 void LinkedL_Push(LinkedList_t ** startPtrPtr, const char * value){
 
 	//if value is already in the list, it doesn't have to be pushed
-	if(LinkedL_contains(startPtrPtr, value) == 0){
+	if(LinkedL_Contains(startPtrPtr, value) == 0){
 
 		//making new element and linking value to it
 		LinkedList_t* newElementPtr = malloc(sizeof(LinkedList_t));
@@ -44,7 +44,7 @@ void LinkedL_Push(LinkedList_t ** startPtrPtr, const char * value){
 	}else{
 		printf("Value was already in the list\n");
 	}
-	LinkedL_printList(*startPtrPtr);
+	LinkedL_PrintList(*startPtrPtr);
 }
 
 const char* LinkedL_Delete(LinkedList_t ** startPtrPtr, const char * toDelete){

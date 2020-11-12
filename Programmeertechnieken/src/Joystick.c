@@ -54,7 +54,7 @@ void Joystick_Init(){
 }
 
 void Joystick_InputHandler() {
-	if(enabled == 1){
+	if(enabled == 1 & joystickFlags == 0){
 
 		//debounce: After the first edge, wait for a specific amount of time before reading the actual value.
 		Wait_ms(200);

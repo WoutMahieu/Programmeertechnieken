@@ -21,7 +21,7 @@ char tagID[SIZEOF_TAG_ID + 1] = {0};
 
 char* firstTag = "6700999FF2";
 
-//list of tags
+//list of valid/added tags
 LinkedList_t* startPtrRFID = NULL;
 
 void RFID_Init(){
@@ -212,8 +212,7 @@ void RFID_DataHandler(){
 	}
 }
 
-int RFID_LockHandler(){
-	int lock = 0; //0 = closed, 1 = opened
+void RFID_LockHandler(){
 	RFID_DataHandler();
 
 	if(strcmp(tagID, "") != 0){
@@ -223,10 +222,10 @@ int RFID_LockHandler(){
 
 		if(RFID_ContainsTagLL(tagLockHandler) == 1){
 			printf("Tag is valid, lock opened\n");
-			lock = 1;
+			Lock_DriveLock(1);
 		}else{
 			printf("Tag is invalid, lock stays closed\n");
-			lock = 0;
+			Lock_DriveLock(0);
 		}
 
 		RFID_PrintLL();
@@ -237,7 +236,6 @@ int RFID_LockHandler(){
 
 	//setting flag so new UART can be read
 	UART_SetDataRead(0);
-	return lock;
 }
 
 void RFID_AddTagLL(const char* tag){
