@@ -54,7 +54,7 @@ void Joystick_Init(){
 }
 
 void Joystick_InputHandler() {
-	if(enabled == 1 & joystickFlags == 0){
+	if(enabled == 1 && joystickFlags == 0){
 
 		//debounce: After the first edge, wait for a specific amount of time before reading the actual value.
 		Wait_ms(200);
@@ -93,6 +93,14 @@ void Joystick_InputHandler() {
 			LPC_GPIOINT->IO0IntClr |= (1 << 24); //
 			assert(LPC_GPIOINT->IO0IntClr == 0); //read the interrupt flag to make sure it has been set
 		}
+	}
+	else{
+		LPC_GPIOINT->IO0IntClr |= (1 << 15); //
+		LPC_GPIOINT->IO0IntClr |= (1 << 16); //
+		LPC_GPIOINT->IO0IntClr |= (1 << 17); //
+		LPC_GPIOINT->IO0IntClr |= (1 << 23); //
+		LPC_GPIOINT->IO0IntClr |= (1 << 24); //
+		assert(LPC_GPIOINT->IO0IntClr == 0); //read the interrupt flag to make sure it has been set
 	}
 }
 

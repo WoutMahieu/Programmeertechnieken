@@ -9,7 +9,7 @@
 #include "InputControl.h"
 
 int InputControl_CheckJSLeft(){
-	if(Joystick_GetFlags == 1){
+	if(Joystick_GetFlags() == 1){
 		Joystick_SetFlags(0);
 		return 1;
 	}else{
@@ -18,16 +18,7 @@ int InputControl_CheckJSLeft(){
 }
 
 int InputControl_CheckJSCenter(){
-	if(Joystick_GetFlags == 2){
-		Joystick_SetFlags(0);
-		return 1;
-	}else{
-		return 0;
-	}
-}
-
-int InputControl_CheckJSUp(){
-	if(Joystick_GetFlags == 4){
+	if(Joystick_GetFlags() == 2){
 		Joystick_SetFlags(0);
 		return 1;
 	}else{
@@ -36,7 +27,16 @@ int InputControl_CheckJSUp(){
 }
 
 int InputControl_CheckJSDown(){
-	if(Joystick_GetFlags == 8){
+	if(Joystick_GetFlags() == 4){
+		Joystick_SetFlags(0);
+		return 1;
+	}else{
+		return 0;
+	}
+}
+
+int InputControl_CheckJSUp(){
+	if(Joystick_GetFlags() == 8){
 		Joystick_SetFlags(0);
 		return 1;
 	}else{
@@ -45,7 +45,7 @@ int InputControl_CheckJSDown(){
 }
 
 int InputControl_CheckJSRight(){
-	if(Joystick_GetFlags == 16){
+	if(Joystick_GetFlags() == 16){
 		Joystick_SetFlags(0);
 		return 1;
 	}else{
