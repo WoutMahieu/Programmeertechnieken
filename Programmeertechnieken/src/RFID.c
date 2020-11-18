@@ -212,7 +212,7 @@ void RFID_DataHandler(){
 	}
 }
 
-void RFID_LockHandler(){
+int RFID_LockHandler(){
 	RFID_DataHandler();
 
 	if(strcmp(tagID, "") != 0){
@@ -222,10 +222,10 @@ void RFID_LockHandler(){
 
 		if(RFID_ContainsTagLL(tagLockHandler) == 1){
 			printf("Tag is valid, lock opened\n");
-			Lock_DriveLock(1);
+			return 1;
 		}else{
 			printf("Tag is invalid, lock stays closed\n");
-			Lock_DriveLock(0);
+			return 0;
 		}
 
 		RFID_PrintLL();
