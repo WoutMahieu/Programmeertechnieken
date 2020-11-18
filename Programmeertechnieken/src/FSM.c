@@ -20,7 +20,7 @@
  *-------------------------------------------------------------------------------------------------------------
  *TOE TE VOEGEN:
  *3x verkeerde tag = alarm
- *Automatisch sluiten na x seconden toe
+ *Automatisch sluiten na x seconden toe => Geïmplementeerd, ongetest
  */
 
 #include "FSM.h"
@@ -65,7 +65,7 @@ void FSM_UpdateStates(void){
 	case Opened:
 		FSM_Opened();
 
-		//Check for valid RFID: if valid => Locked else check for joystick center => Config
+		//Check for valid RFID: if valid => Locked else check for joystick center => Config else check for 10s passed & contactswitch = '1' => Locked
 		if(InputControl_CheckRFID()){
 			FSM_ExitOpened();
 			FSM_CurrentState = Locked;
@@ -75,6 +75,19 @@ void FSM_UpdateStates(void){
 			FSM_ExitOpened();
 			FSM_CurrentState = Config;
 			FSM_EnterConfig();
+		}
+		else if(InputControl_CheckCS()){
+			if(!Timer_CheckTimer()){
+				Timer_StartTimer(10);
+			}
+			else{
+				FSM_ExitOpened();
+				FSM_CurrentState = Locked;
+				FSM_EnterLocked;
+			}
+		}
+		else{
+			Timer_StopTimer();
 		}
 
 		break;

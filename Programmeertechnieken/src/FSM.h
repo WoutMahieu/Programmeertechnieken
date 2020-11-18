@@ -11,8 +11,8 @@
 #include "DisplayControl.h"
 #include "OutputControl.h"
 #include "InputControl.h"
-#include "Delay.h"
 #include "HardwareInit.h"
+#include "Timer.h"
 
 extern enum states;
 extern enum currentState;

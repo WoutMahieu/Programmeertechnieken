@@ -14,4 +14,8 @@ void Wait_s(uint32_t t);
 void Wait_ms(uint32_t t);
 void Wait_us(uint32_t t);
 
+void Delay_StartTime(uint32_t t);
+uint8_t Delay_CheckTime();
+void Delay_StopTime();
+
 #endif /* DELAY_H_ */
