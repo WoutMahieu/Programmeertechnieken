@@ -10,6 +10,7 @@
 
 #include "Joystick.h"
 #include "ContactSwitch.h"
+#include "RFID.h"
 
 int InputControl_CheckJSCenter();
 int InputControl_CheckJSDown();
@@ -17,5 +18,8 @@ int InputControl_CheckJSLeft();
 int InputControl_CheckJSRight();
 int InputControl_CheckJSUp();
 int InputControl_checkCS();
+void InputControl_DisableRFID();
+void InputControl_EnableRFID();
+int InputControl_CheckRFID();
 
 #endif /* INPUTCONTROL_H_ */

@@ -57,3 +57,14 @@ int InputControl_CheckCS(){
 	return ContactSwitch_GetFlag();
 }
 
+void InputControl_DisableRFID(){
+	RFID_DisableTagInRangeInterrupt();
+}
+
+void InputControl_EnableRFID(){
+	RFID_EnableTagInRangeInterrupt();
+}
+
+int InputControl_CheckRFID(){
+	return RFID_LockHandler();
+}
