@@ -53,8 +53,7 @@ int InputControl_CheckJSRight(){
 	}
 }
 
-int InputControl_checkCS(){
+int InputControl_CheckCS(){
 	return ContactSwitch_GetFlag();
-}
 }
 
