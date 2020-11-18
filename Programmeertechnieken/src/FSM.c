@@ -16,7 +16,7 @@ void FSM_UpdateStates(void){
 		FSM_Init();
 
 		//Check contactswitch, if '1' => Locked, else => Opened
-		if(0){
+		if(InputControl_CheckCS()){
 			FSM_ExitInit();
 			FSM_CurrentState = Locked;
 			FSM_EnterLocked();
@@ -31,33 +31,29 @@ void FSM_UpdateStates(void){
 	case Locked:
 		FSM_Locked();
 
-		//Check contactswitch, if '1' => Forced, else check for valid RFID: if valid => Opened else nothing
-		if(0){
+		//Check contactswitch, if '0' => Forced, else check for valid RFID: if valid => Opened else nothing
+		if(!InputControl_CheckCS()){
 			FSM_ExitLocked();
 			FSM_CurrentState = Forced;
 			FSM_EnterForced();
 		}
-		else{
-			RFID_EnableTagInRangeInterrupt();
-			//wait until lock is opened by a valid RFID-tag
-			while(Lock_GetStatus() == 0){}
+		else if(InputControl_CheckRFID()){
 			FSM_ExitLocked();
 			FSM_CurrentState = Opened;
 			FSM_EnterOpened();
 		}
-
 
 		break;
 	case Opened:
 		FSM_Opened();
 
 		//Check for valid RFID: if valid => Locked else check for joystick center => Config
-		if(0){
+		if(InputControl_CheckRFID()){
 			FSM_ExitOpened();
 			FSM_CurrentState = Locked;
 			FSM_EnterLocked();
 		}
-		else if(0){
+		else if(InputControl_CheckJSCenter()){
 			FSM_ExitOpened();
 			FSM_CurrentState = Config;
 			FSM_EnterConfig();
@@ -68,8 +64,8 @@ void FSM_UpdateStates(void){
 		FSM_Forced();
 
 		//Check if valid tag scanned, if !valid => nothing, else check contactswitch, if '1' => Locked, else => Opened
-		if(0){
-			if(0){
+		if(InputControl_CheckRFID()){
+			if(InputControl_CheckCS()){
 				FSM_ExitForced();
 				FSM_CurrentState = Locked;
 				FSM_EnterLocked();
@@ -86,6 +82,12 @@ void FSM_UpdateStates(void){
 		FSM_Config();
 
 		//Check for joystick center => Opened
+		if(InputControl_CheckJSCenter()){
+			FSM_ExitConfig();
+			FSM_CurrentState = Opened;
+			FSM_EnterOpened();
+		}
+
 		break;
 	}
 }
@@ -93,7 +95,9 @@ void FSM_UpdateStates(void){
 void FSM_Init(void){
 	//Init all hardware & show initialization message on screen !!!! set LCD_autoUpdate = 0; !!!!
 	HardwareInit();
-	RFID_DisableTagInRangeInterrupt();
+
+	//disable RFID
+	InputControl_DisableRFID();
 }
 
 void FSM_ExitInit(void){}
@@ -101,21 +105,34 @@ void FSM_ExitInit(void){}
 void FSM_EnterLocked(void){
 	//Display locked screen & lock
 	DisplayControl_LockedScreen();
+	OutputControl_Lock();
+
+	//enable RFID
+	InputControl_EnableRFID();
 }
 
 void FSM_Locked(void){}
 
-void FSM_ExitLocked(void){}
+void FSM_ExitLocked(void){
+	//disable RFID
+	InputControl_DisableRFID();
+}
 
 void FSM_EnterOpened(void){
 	//Display opened screen & unlock
 	DisplayControl_OpenedScreen();
 	OutputControl_Unlock();
+
+	//enable RFID
+	InputControl_EnableRFID();
 }
 
 void FSM_Opened(void){}
 
-void FSM_ExitOpened(void){}
+void FSM_ExitOpened(void){
+	//disable RFID
+	InputControl_DisableRFID();
+}
 
 void FSM_EnterForced(void){
 	//Display alarm screen & activate alarm

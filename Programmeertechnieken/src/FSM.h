@@ -8,10 +8,9 @@
 #ifndef FSM_H_
 #define FSM_H_
 
-#include "ContactSwitch.h"
-#include "RFID.h"
 #include "DisplayControl.h"
 #include "OutputControl.h"
+#include "InputControl.h"
 #include "Delay.h"
 #include "HardwareInit.h"
 
