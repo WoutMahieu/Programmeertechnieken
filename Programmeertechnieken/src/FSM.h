@@ -14,9 +14,6 @@
 #include "HardwareInit.h"
 #include "Timer.h"
 
-extern enum states;
-extern enum currentState;
-
 void FSM_UpdateStates(void);
 void FSM_Init(void);
 void FSM_ExitInit(void);

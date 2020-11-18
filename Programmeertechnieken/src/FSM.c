@@ -83,7 +83,7 @@ void FSM_UpdateStates(void){
 			else{
 				FSM_ExitOpened();
 				FSM_CurrentState = Locked;
-				FSM_EnterLocked;
+				FSM_EnterLocked();
 			}
 		}
 		else{

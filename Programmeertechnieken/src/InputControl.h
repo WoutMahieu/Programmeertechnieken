@@ -17,7 +17,7 @@ int InputControl_CheckJSDown();
 int InputControl_CheckJSLeft();
 int InputControl_CheckJSRight();
 int InputControl_CheckJSUp();
-int InputControl_checkCS();
+int InputControl_CheckCS();
 void InputControl_DisableRFID();
 void InputControl_EnableRFID();
 int InputControl_CheckRFID();
