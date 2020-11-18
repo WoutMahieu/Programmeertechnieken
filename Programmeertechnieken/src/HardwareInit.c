@@ -9,14 +9,15 @@
 
 
 void HardwareInit(){
+	LCD_Init();
+	LCD_autoUpdate = 0;
+	DisplayControl_InitScreen();
+
 	Buzzer_Init();
 	ContactSwitch_Init();
-	DisplayControl_InitScreen();
-	Joystick_Init();
-	LCD_Init();
+	//Joystick_Init();
 	Lock_Init();
-	RFID_Init();
-	SSP_Init();
+	//RFID_Init();
 	StatusLED_Init();
 	UART_Init();
 }
