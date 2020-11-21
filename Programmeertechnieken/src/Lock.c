@@ -27,6 +27,6 @@ void Lock_DriveLock(int bool){
 	}
 }
 
-void Lock_GetStatus(){
+int Lock_GetStatus(){
 	return lock;
 }

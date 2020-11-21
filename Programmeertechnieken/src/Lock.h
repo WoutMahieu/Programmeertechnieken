@@ -14,6 +14,6 @@ void Lock_Init();
 
 void Lock_DriveLock(int bool);
 
-void Lock_GetStatus();
+int Lock_GetStatus();
 
 #endif /* LOCK_H_ */
