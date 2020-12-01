@@ -21,6 +21,10 @@ char tagID[SIZEOF_TAG_ID + 1] = {0};
 
 char* firstTag = "6700999FF2";
 
+int boolRFID = 0;
+
+int enableRFID = 1;
+
 //list of valid/added tags
 LinkedList_t* startPtrRFID = NULL;
 
@@ -38,7 +42,7 @@ void RFID_Init(){
 	LPC_GPIOINT->IO0IntEnR |= (1 << 18);
 
 	//adding a tag so there can be tags added or deleted
-	RFID_AddTag(firstTag);
+	RFID_AddTagLL(firstTag);
 
 	NVIC_EnableIRQ(EINT3_IRQn); //enable External Interrupt 0 Interrupt
 	//note: we use EINT3 instead of EINT0 (doesn't work?!): all GPIO interrupt are connected to EINT3 interrupt source
@@ -46,29 +50,27 @@ void RFID_Init(){
 }
 
 void RFID_EnableTagInRangeInterrupt(){
-	//DIP 11 as an input so interrupts can be triggerd
-	LPC_GPIO0->FIODIR &= ~(1 << 18);
+	enableRFID = 1;
 }
 
 void RFID_DisableTagInRangeInterrupt(){
-	//DIP 11 as an output so there can't be an interrupt triggered
-	LPC_GPIO0->FIODIR |= (1 << 18);
+	enableRFID = 0;
 }
 
 void RFID_AddTag(){
 
-	RFID_DisableTagInRangeInterrupt();
+	//RFID_DisableTagInRangeInterrupt();
 
 	printf("Bring your tag in range of the RFID reader within the upcoming 5 seconds\n");
 	UART_ClearFIFO();
-	Wait_s(5);
+	//Wait_s(5);
 	RFID_DataHandler();
 
 	if(strcmp(tagID, "") != 0){
 		RFID_AddTagLL(tagID);
 	}
 
-	RFID_EnableTagInRangeInterrupt();
+	//RFID_EnableTagInRangeInterrupt();
 
 	//setting flag so new UART can be read
 	UART_SetDataRead(0);
@@ -212,30 +214,32 @@ void RFID_DataHandler(){
 	}
 }
 
-int RFID_LockHandler(){
-	RFID_DataHandler();
+void RFID_LockHandler(){
 
-	if(strcmp(tagID, "") != 0){
-		const char* tagLockHandler = tagID;
+	if(enableRFID){
+		RFID_DataHandler();
 
-		printf("tagLockHandler: %s\n", tagLockHandler);
+		if(strcmp(tagID, "") != 0){
+			const char* tagLockHandler = tagID;
 
-		if(RFID_ContainsTagLL(tagLockHandler) == 1){
-			printf("Tag is valid, lock opened\n");
-			return 1;
-		}else{
-			printf("Tag is invalid, lock stays closed\n");
-			return 0;
+			printf("tagLockHandler: %s\n", tagLockHandler);
+
+			if(RFID_ContainsTagLL(tagLockHandler) == 1){
+				printf("Tag is valid, lock opened\n");
+				boolRFID = 1;
+			}else{
+				printf("Tag is invalid, lock stays closed\n");
+			}
+
+			RFID_PrintLL();
+		}
+		else{
+			printf("Received data was invalid\n");
 		}
 
-		RFID_PrintLL();
+		//setting flag so new UART can be read
+		UART_SetDataRead(0);
 	}
-	else{
-		printf("Received data was invalid\n");
-	}
-
-	//setting flag so new UART can be read
-	UART_SetDataRead(0);
 }
 
 void RFID_AddTagLL(const char* tag){
@@ -252,4 +256,10 @@ int RFID_ContainsTagLL(const char* tag){
 
 void RFID_PrintLL(){
 	LinkedL_PrintList(startPtrRFID);
+}
+
+int RFID_getBool(){
+	int temp = boolRFID;
+	boolRFID = 0;
+	return temp;
 }

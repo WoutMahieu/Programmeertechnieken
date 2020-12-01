@@ -66,5 +66,9 @@ void InputControl_EnableRFID(){
 }
 
 int InputControl_CheckRFID(){
-	return RFID_LockHandler();
+	return RFID_getBool();
+}
+
+void InputControl_AddRFID(){
+	RFID_AddTag();
 }

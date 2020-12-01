@@ -15,9 +15,9 @@ void HardwareInit(){
 
 	Buzzer_Init();
 	ContactSwitch_Init();
-	//Joystick_Init();
 	Lock_Init();
-	//RFID_Init();
-	StatusLED_Init();
 	UART_Init();
+	RFID_Init();
+	Joystick_Init();
+	StatusLED_Init();
 }

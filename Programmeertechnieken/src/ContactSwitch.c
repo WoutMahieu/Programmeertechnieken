@@ -7,11 +7,10 @@
 #include "ContactSwitch.h"
 
 void ContactSwitch_Init(void){
-	LPC_GPIO1->FIODIR &= ~(1 << 31); //p1.31 = Input (DIP20)
-	LPC_GPIO1->FIOMASK &= ~(1 << 31);
+	LPC_PINCON->PINMODE3 |= (3 << 28);
+	LPC_GPIO1->FIODIR &= ~(1 << 30);
 }
 
 uint8_t ContactSwitch_GetFlag(void){
-	uint8_t flag = (uint8_t)((LPC_GPIO1->FIOPIN >> 31) & 0x01);
-	return (flag);
+	return (uint8_t)((LPC_GPIO1->FIOPIN >> 30) & 0x1);
 }

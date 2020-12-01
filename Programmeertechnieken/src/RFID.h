@@ -37,7 +37,7 @@ int RFID_CheckSum(const char *);
 const char* RFID_GetTagID(const char *);
 
 void RFID_DataHandler();
-int RFID_LockHandler();
+void RFID_LockHandler();
 
 void RFID_AddTag();
 const char* RFID_DeleteTag(const char *);
@@ -46,5 +46,7 @@ void RFID_AddTagLL(const char *);
 const char* RFID_DeleteTagLL(const char *);
 int RFID_ContainsTagLL(const char *);
 void RFID_PrintLL();
+
+int RFID_getBool();
 
 #endif /* RFID_H_ */

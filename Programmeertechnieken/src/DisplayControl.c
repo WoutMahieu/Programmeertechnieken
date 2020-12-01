@@ -10,7 +10,7 @@
 //variables for the config menu
 int position = 0;
 int newPos = 0;
-int tempPos = 0;
+int tempPos = 1;
 
 void DisplayControl_InitScreen(void){
 	LCD_Clear();
@@ -45,26 +45,21 @@ void DisplayControl_AlarmScreen(void){
 	LCD_Update();
 }
 
-void Displaycontrol_ConfigScreen(){
-	LCD_Clear();
-	Joystick_Enable();
-	MenuStartUp();
-	MenuBuilder();
+int Displaycontrol_ConfigScreen(){
+	MenuPositionUpdater();
 
-	while(1){
-		MenuPositionUpdater();
-
-		if(position != tempPos){
-			newPos = 1;
-		}
-		tempPos = position;
-
-		if(newPos == 1){
-			printf("%d\n", position);
-			MenuCursorUpdater(position);
-			newPos = 0;
-		}
+	if(position != tempPos){
+		newPos = 1;
 	}
+	tempPos = position;
+
+	if(newPos == 1){
+		printf("%d\n", position);
+		MenuCursorUpdater(position);
+		newPos = 0;
+	}
+
+	return position;
 }
 
 void DisplayControl_PrintUpperLock(int x, int y){
@@ -116,67 +111,24 @@ void DisplayControl_PrintAlarm(int x, int y){
 	LCD_Pixel(x + 17, y + 2, 1);
 }
 
-void MenuStartUp(){
+void DisplayControl_MenuBuilder(){
 	LCD_Clear();
-	LCD_Cursor(0, 0);
-	LCD_Print("Configuration Menu");
-	LCD_Update();
-	while(InputControl_CheckJSCenter() == 0){}
-	LCD_Clear();
-}
-
-void MenuBuilder(){
 	LCD_Cursor(0, 0);
 	LCD_Print("Add Tag");
-	LCD_Cursor(0, 15);
-	LCD_Print("Remove Tag");
 	LCD_Cursor(63, 0);
-	LCD_Print("Show Tags");
-	LCD_Cursor(63, 15);
-	LCD_Print("Option 4");
+	LCD_Print("Remove Tag");
+	LCD_Update();
 }
 
 void MenuPositionUpdater(){
-	int down = InputControl_CheckJSDown();
-	int up = InputControl_CheckJSUp();
 	int right = InputControl_CheckJSRight();
 	int left = InputControl_CheckJSLeft();
 
-
-	if(down){
-		if(position < 4)
-			position += 1;
-		else
-			position = 0;
-	}
-
-	else if(up){
-		if(position > 0)
-			position -= 1;
-		else
-			position = 3;
-	}
-
-	else if(right){
+	if(right || left){
 		if(position == 0)
-			position = 2;
-		else if(position == 1)
-			position = 3;
-		else if(position == 2)
-			position = 0;
-		else if(position == 3)
 			position = 1;
-	}
-
-	else if(left){
-		if(position == 0)
-			position = 2;
 		else if(position == 1)
-			position = 3;
-		else if(position == 2)
 			position = 0;
-		else if(position == 3)
-			position = 1;
 	}
 }
 
@@ -194,25 +146,9 @@ void MenuCursorUpdater(int pos){
 
 	else if(pos == 1){
 		LCD_Rect(0, 9, 60, 10, 0);
-		LCD_Rect(0, 24, 60, 25, 1);
-		LCD_Rect(63, 9, 123, 10, 0);
-		LCD_Rect(63, 24, 123, 25, 0);
-		LCD_Update();
-	}
-
-	else if(pos == 2){
-		LCD_Rect(0, 9, 60, 10, 0);
 		LCD_Rect(0, 24, 60, 25, 0);
 		LCD_Rect(63, 9, 123, 10, 1);
 		LCD_Rect(63, 24, 123, 25, 0);
-		LCD_Update();
-	}
-
-	else if(pos == 3){
-		LCD_Rect(0, 9, 60, 10, 0);
-		LCD_Rect(0, 24, 60, 25, 0);
-		LCD_Rect(63, 9, 123, 10, 0);
-		LCD_Rect(63, 24, 123, 25, 1);
 		LCD_Update();
 	}
 

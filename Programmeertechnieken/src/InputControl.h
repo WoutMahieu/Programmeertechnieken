@@ -21,5 +21,6 @@ int InputControl_CheckCS();
 void InputControl_DisableRFID();
 void InputControl_EnableRFID();
 int InputControl_CheckRFID();
+void InputControl_AddRFID();
 
 #endif /* INPUTCONTROL_H_ */
