@@ -72,3 +72,11 @@ int InputControl_CheckRFID(){
 void InputControl_AddRFID(){
 	RFID_AddTag();
 }
+
+void InputConrol_EnableJoystick(){
+	Joystick_Enable();
+}
+
+void InputConrol_DisableJoystick(){
+	Joystick_Disable();
+}
