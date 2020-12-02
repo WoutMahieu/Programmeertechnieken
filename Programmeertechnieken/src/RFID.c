@@ -8,11 +8,6 @@
 
 #include "RFID.h"
 
-
-//char tag_checksum[SIZEOF_TAG_CHECKSUM];
-//char hexData[SIZEOF_TAG_CHECKSUM];
-//char tag[SIZEOF_TAG_ID];
-
 // + 1 for the end of string char '/0'
 char receivedData[SIZEOF_UART_DATA + 1] = {0};
 char checksumData[SIZEOF_TAG_CHECKSUM + 1] = {0};
@@ -23,7 +18,8 @@ char* firstTag = "6700999FF2";
 
 int boolRFID = 0;
 
-int enableRFID = 1;
+int mode = 0;
+int falseTries = 0;
 
 //list of valid/added tags
 LinkedList_t* startPtrRFID = NULL;
@@ -49,35 +45,25 @@ void RFID_Init(){
 	//https://binaryupdates.com/gpio-in-cortex-m3-lpc1768-microcontroller/2/
 }
 
-void RFID_EnableTagInRangeInterrupt(){
-	enableRFID = 1;
-}
-
-void RFID_DisableTagInRangeInterrupt(){
-	enableRFID = 0;
+void RFID_SetMode(int m){
+	mode = m;
 }
 
 void RFID_AddTag(){
 
-	//RFID_DisableTagInRangeInterrupt();
-
-	printf("Bring your tag in range of the RFID reader within the upcoming 5 seconds\n");
 	UART_ClearFIFO();
-	//Wait_s(5);
 	RFID_DataHandler();
 
 	if(strcmp(tagID, "") != 0){
 		RFID_AddTagLL(tagID);
 	}
 
-	//RFID_EnableTagInRangeInterrupt();
-
 	//setting flag so new UART can be read
 	UART_SetDataRead(0);
 }
 
-const char* RFID_DeleteTag(const char* toDelete){
-	return LinkedL_Delete(&startPtrRFID, toDelete);
+void RFID_DeleteTag(const char* toDelete){
+	LinkedL_Delete(&startPtrRFID, toDelete);
 }
 
 void RFID_DriveLED(){
@@ -106,10 +92,8 @@ const char* RFID_GetTagAndCheckSumData(const char * uartData){
 		//for debugging purposes
 		//printf("RFID_getTagAndCheckSumData: %s\n", tag_checksum);
 
-	}else{
-		printf("WARNING: invalid data\n");
-		//checksumData[0] = '';
 	}
+
 	return checksumData;
 }
 
@@ -170,6 +154,7 @@ const char* RFID_GetTagID(const char * tagChecksum){
 }
 
 void RFID_DataHandler(){
+	//for debugging purposes
 	printf("-----------------------------------------------------------\n");
 
 	printf("NEW TAG READ\n");
@@ -216,38 +201,51 @@ void RFID_DataHandler(){
 
 void RFID_LockHandler(){
 
-	if(enableRFID){
-		RFID_DataHandler();
+	RFID_DataHandler();
 
-		if(strcmp(tagID, "") != 0){
-			const char* tagLockHandler = tagID;
+	if(strcmp(tagID, "") != 0){
+		const char* tagLockHandler = tagID;
 
-			printf("tagLockHandler: %s\n", tagLockHandler);
+		printf("tagLockHandler: %s\n", tagLockHandler);
 
-			if(RFID_ContainsTagLL(tagLockHandler) == 1){
-				printf("Tag is valid, lock opened\n");
-				boolRFID = 1;
-			}else{
-				printf("Tag is invalid, lock stays closed\n");
-			}
+		//check mode
+		switch(mode){
+			case 0:
+			default:
+				if(RFID_ContainsTagLL(tagLockHandler) == 1){
+					printf("Tag is valid, lock opened\n");
+					boolRFID = 1;
 
-			RFID_PrintLL();
+					//Flash LED
+					StatusLED_Flash();
+				}else{
+					printf("Tag is invalid, lock stays closed\n");
+					falseTries++;
+				}
+				break;
+			case 1:
+				RFID_AddTagLL(tagID);
+				break;
+			case 2:
+				RFID_DeleteTagLL(tagID);
+				break;
 		}
-		else{
-			printf("Received data was invalid\n");
-		}
 
-		//setting flag so new UART can be read
-		UART_SetDataRead(0);
+		RFID_PrintLL();
 	}
+	else{
+		printf("Received data was invalid\n");
+	}
+	//setting flag so new UART can be read
+	UART_SetDataRead(0);
 }
 
 void RFID_AddTagLL(const char* tag){
 	LinkedL_Push(&startPtrRFID, tag);
 }
 
-const char* RFID_DeleteTagLL(const char* tag){
-	return LinkedL_Delete(&startPtrRFID, tag);
+void RFID_DeleteTagLL(const char* tag){
+	LinkedL_Delete(&startPtrRFID, tag);
 }
 
 int RFID_ContainsTagLL(const char* tag){
@@ -258,8 +256,21 @@ void RFID_PrintLL(){
 	LinkedL_PrintList(startPtrRFID);
 }
 
-int RFID_getBool(){
+LinkedList_t* RFID_GetLL(){
+	return startPtrRFID;
+}
+
+int RFID_GetBool(){
 	int temp = boolRFID;
 	boolRFID = 0;
 	return temp;
 }
+
+int RFID_GetFalseTries(void){
+	return falseTries;
+}
+
+void RFID_SetFalseTries(int ft){
+	falseTries = ft;
+}
+

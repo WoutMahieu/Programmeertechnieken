@@ -12,9 +12,13 @@ void Timer_StartTimer(uint32_t t){
 }
 
 int Timer_CheckTimer(){
-	return Delay_CheckTime();
+	return Delay_GetFlag();
 }
 
 void Timer_StopTimer(){
-	Delay_StopTime();
+	Delay_ResetTime();
+}
+
+int Timer_CheckTimerStarted(){
+	return Delay_CheckTimerStarted();
 }

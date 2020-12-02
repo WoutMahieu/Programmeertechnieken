@@ -57,26 +57,26 @@ int InputControl_CheckCS(){
 	return ContactSwitch_GetFlag();
 }
 
-void InputControl_DisableRFID(){
-	RFID_DisableTagInRangeInterrupt();
-}
-
-void InputControl_EnableRFID(){
-	RFID_EnableTagInRangeInterrupt();
+void InputControl_ModeRFID(int m){
+	RFID_SetMode(m);
 }
 
 int InputControl_CheckRFID(){
-	return RFID_getBool();
+	return RFID_GetBool();
 }
 
-void InputControl_AddRFID(){
-	RFID_AddTag();
+int InputControl_CheckRFIDFalseTries(){
+	return RFID_GetFalseTries();
 }
 
-void InputConrol_EnableJoystick(){
+void InputControl_SetRFIDFalseTries(int ft){
+	RFID_SetFalseTries(ft);
+}
+
+void InputControl_EnableJoystick(){
 	Joystick_Enable();
 }
 
-void InputConrol_DisableJoystick(){
+void InputControl_DisableJoystick(){
 	Joystick_Disable();
 }

@@ -40,18 +40,26 @@ void LinkedL_Push(LinkedList_t ** startPtrPtr, const char * value){
 		//newElementPtr becomes te first pointer in the list
 		newElementPtr->nextPtr = *startPtrPtr;
 		*startPtrPtr = newElementPtr;
-		printf("Value has been pushed to the list\n");
+		//printf("Value has been pushed to the list\n");
+
+		//Flash LED
+		StatusLED_Flash();
 	}else{
-		printf("Value was already in the list\n");
+		//printf("Value was already in the list\n");
 	}
-	LinkedL_PrintList(*startPtrPtr);
+	//LinkedL_PrintList(*startPtrPtr);
 }
 
-const char* LinkedL_Delete(LinkedList_t ** startPtrPtr, const char * toDelete){
+void LinkedL_Delete(LinkedList_t ** startPtrPtr, const char * toDelete){
 	LinkedList_t* walkingPtr = *startPtrPtr;
 	LinkedList_t* prevWalkingPtr = NULL;
 	LinkedList_t* temp = NULL;
 	int found = 0;
+
+	//return if only 1 element in list
+	if(walkingPtr->nextPtr == NULL){
+		return;
+	}
 
 	//check if value is already in the linked list
 	while(walkingPtr != NULL && found == 0){
@@ -64,27 +72,29 @@ const char* LinkedL_Delete(LinkedList_t ** startPtrPtr, const char * toDelete){
 				temp = walkingPtr;
 				*startPtrPtr = walkingPtr->nextPtr;
 				found = 1;
-				return temp->value;
 			}
 			else{
 				temp = walkingPtr;
 				prevWalkingPtr->nextPtr = walkingPtr->nextPtr;
 				found = 1;
-				return temp->value;
 			}
+
+			free(temp);
+
+			//Flash LED
+			StatusLED_Flash();
 		}
 	}
-	free(temp);
 }
 
 int LinkedL_Contains(LinkedList_t ** startPtrPtr, const char * value){
 	LinkedList_t* walkingPtr = *startPtrPtr;
 	int found = 0;
 
-	printf("List of comparisons\n");
+	//printf("List of comparisons\n");
 	//check if value is in the linked list
  	while(walkingPtr != NULL && found == 0){
-		printf("%s <==> %s\n", value, walkingPtr->value);
+		//printf("%s <==> %s\n", value, walkingPtr->value);
 		if(strcmp((walkingPtr->value), value) == 0){
 			//for debugging purposes
 			//printf("Value found in the list %s\n", walkingPtr->value);

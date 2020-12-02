@@ -16,5 +16,6 @@
 #include "Delay.h"
 
 void EINT3_IRQHandler();
+void TIMER1_IRQHandler();
 
 #endif /* GPIO_INTERRUPT_H_ */

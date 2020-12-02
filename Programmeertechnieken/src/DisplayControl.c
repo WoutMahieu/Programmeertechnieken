@@ -34,6 +34,10 @@ void DisplayControl_OpenedScreen(void){
 	DisplayControl_PrintUpperLock(17, 3);
 	LCD_Cursor(23, 20);
 	LCD_Print("Opened");
+	LCD_Cursor(63, 10);
+	LCD_Print("Press CENTER");
+	LCD_Cursor(63, 20);
+	LCD_Print("for config");
 	LCD_Update();
 }
 
@@ -43,6 +47,19 @@ void DisplayControl_AlarmScreen(void){
 	LCD_Cursor(23,20);
 	LCD_Print("ALARM");
 	LCD_Update();
+}
+
+void DisplayControl_PrintTags(){
+	LinkedList_t* walkingPtr = RFID_GetLL();
+	while(walkingPtr != NULL){
+		LCD_Clear();
+		LCD_Cursor(0,0);
+		LCD_Print(walkingPtr->value);
+		LCD_Update();
+		Wait_s(2);
+		walkingPtr = walkingPtr->nextPtr;
+	}
+	DisplayControl_MenuBuilder();
 }
 
 int Displaycontrol_ConfigScreen(){
@@ -113,21 +130,38 @@ void DisplayControl_PrintAlarm(int x, int y){
 
 void DisplayControl_MenuBuilder(){
 	LCD_Clear();
+
+	newPos = position = 0;
+	tempPos = 1;
+
 	LCD_Cursor(0, 0);
-	LCD_Print("Add Tag");
+	LCD_Print("Add tag");
 	LCD_Cursor(63, 0);
-	LCD_Print("Remove Tag");
+	LCD_Print("Remove tag");
+	LCD_Cursor(0, 12);
+	LCD_Print("Print tags");
+	LCD_Cursor(0, 24);
+	LCD_Print("Press CENTER to return");
 	LCD_Update();
 }
 
 void MenuPositionUpdater(){
 	int right = InputControl_CheckJSRight();
 	int left = InputControl_CheckJSLeft();
+	int up = InputControl_CheckJSUp();
+	int down = InputControl_CheckJSDown();
 
 	if(right || left){
 		if(position == 0)
 			position = 1;
 		else if(position == 1)
+			position = 0;
+	}
+
+	if(up || down){
+		if(position == 0 || position == 1)
+			position = 2;
+		else if(position == 2)
 			position = 0;
 	}
 }
@@ -138,17 +172,22 @@ void MenuCursorUpdater(int pos){
 
 	if(pos == 0){
 		LCD_Rect(0, 9, 60, 10, 1);
-		LCD_Rect(0, 24, 60, 25, 0);
+		LCD_Rect(0, 21, 60, 22, 0);
 		LCD_Rect(63, 9, 123, 10, 0);
-		LCD_Rect(63, 24, 123, 25, 0);
 		LCD_Update();
 	}
 
 	else if(pos == 1){
 		LCD_Rect(0, 9, 60, 10, 0);
-		LCD_Rect(0, 24, 60, 25, 0);
+		LCD_Rect(0, 21, 60, 22, 0);
 		LCD_Rect(63, 9, 123, 10, 1);
-		LCD_Rect(63, 24, 123, 25, 0);
+		LCD_Update();
+	}
+
+	else if(pos == 2){
+		LCD_Rect(0, 9, 60, 10, 0);
+		LCD_Rect(0, 21, 60, 22, 1);
+		LCD_Rect(63, 9, 123, 10, 0);
 		LCD_Update();
 	}
 

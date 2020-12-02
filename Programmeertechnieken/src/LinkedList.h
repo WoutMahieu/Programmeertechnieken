@@ -11,6 +11,7 @@
 #include <stdio.h>
 #include <stdlib.h>
 #include <string.h>
+#include "StatusLED.h"
 
 typedef struct LinkedList{
 	const char * value;
@@ -21,7 +22,7 @@ void LinkedL_PrintList(LinkedList_t* startPtr);
 
 void LinkedL_Push(LinkedList_t ** startPtrPtr, const char * value);
 
-const char * LinkedL_Delete(LinkedList_t ** startPtrPtr, const char * value);
+void LinkedL_Delete(LinkedList_t ** startPtrPtr, const char * value);
 
 int LinkedL_Contains(LinkedList_t ** startPtrPtr, const char * value);
 

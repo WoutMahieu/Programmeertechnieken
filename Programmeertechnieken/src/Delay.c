@@ -36,19 +36,30 @@ void Wait_us(uint32_t t) {
 	while (LPC_TIM0->TCR == 1){} //wait for the match to be reached
 }
 
+int timerReady = 0;
+
 void Delay_StartTime(uint32_t t){
 	LPC_TIM1->TCR = (1 << 1); //Reset
-	LPC_TIM1->MCR = (3 << 1);	//Stop & reset on match
-	LPC_TIM1->MR0 = t * PCLK;	//match t on s
+	LPC_TIM1->MCR = 1;	//interrupt on match
+	LPC_TIM1->MR0 = t * PCLK; //match t on s
 	LPC_TIM1->TCR = 1; //enable Timer1
+	NVIC_EnableIRQ(TIMER1_IRQn);
 }
 
-uint8_t Delay_CheckTime(){
-	return !(LPC_TIM0->TCR & 0x1);
+void Delay_SetFlag(uint8_t f){
+	timerReady = f;
 }
 
-void Delay_StopTime(){
-	LPC_TIM1->TCR &= ~(1 << 0); //Stop
-	LPC_TIM1->TCR = (1 << 1); //Reset
-	LPC_TIM1->TCR = 0;
+int Delay_GetFlag(){
+	return timerReady;
+}
+
+void Delay_ResetTime(){
+	LPC_TIM1->TCR &= ~1;
+	LPC_TIM1->TCR = (1 << 1);
+	timerReady = 0;
+}
+
+int Delay_CheckTimerStarted(){
+	return (LPC_TIM1->TCR & 0x1);
 }

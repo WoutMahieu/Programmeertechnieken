@@ -39,3 +39,10 @@ void StatusLED_Blue(int bool){
 		LPC_GPIO2->FIOSET |= (1 << 1);
 	}
 }
+
+void StatusLED_Flash(){
+	int temp = ~((LPC_GPIO2->FIOPIN >> 1) & 0x7);
+	LPC_GPIO2->FIOSET |= (temp << 1);
+	Wait_ms(250);
+	LPC_GPIO2->FIOCLR |= (temp << 1);
+}
