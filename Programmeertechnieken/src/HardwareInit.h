@@ -19,6 +19,9 @@
 #include "StatusLED.h"
 #include "UART.h"
 
+/**
+* Calls all hardware initialization functions
+*/
 void HardwareInit();
 
 #endif /* HARDWAREINIT_H_ */

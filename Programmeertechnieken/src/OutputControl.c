@@ -27,6 +27,6 @@ void OutputControl_Unlock(void){
 
 void OutputControl_Alarm(void){
 	StatusLED_Red(1);
-	Buzzer_Frequency(2500);
+	Buzzer_Frequency(196);
 	Buzzer_Enable();
 }
