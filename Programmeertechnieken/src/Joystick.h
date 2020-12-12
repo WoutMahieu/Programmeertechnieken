@@ -19,7 +19,7 @@
 *
 * @return  flag
 */
-int Joystick_GetFlags();
+int Joystick_GetFlags(void);
 
 /**
 * Function used to reset the flag each time it has been read by the state machine
@@ -31,22 +31,22 @@ void Joystick_SetFlags(int joystickFlags);
 /**
 * Initialize hardware for joystick input
 */
-void Joystick_Init();
+void Joystick_Init(void);
 
 /**
 * Sets the boolean "enabled" high. This boolean is checked before the flag can be set via the joystick input
 */
-void Joystick_Enable();
+void Joystick_Enable(void);
 
 /**
 * Sets the boolean "enabled" low. This boolean is checked before the flag can be set via the joystick input
 */
-void Joystick_Disable();
+void Joystick_Disable(void);
 
 /**
-* Handles the interrupt, sets the flag
+* Gets called when an interrupt occurs, handles the interrupt, sets the flag
 */
-void Joystick_InputHandler();
+void Joystick_InputHandler(void);
 
 
 #endif /* JOYSTICK_H_ */

@@ -15,6 +15,6 @@ void StatusLED_Init(void);
 void StatusLED_Red(int bool);
 void StatusLED_Green(int bool);
 void StatusLED_Blue(int bool);
-void StatusLED_Flash();
+void StatusLED_Flash(void);
 
 #endif /* STATUSLED_H_ */

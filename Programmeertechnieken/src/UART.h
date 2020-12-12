@@ -13,16 +13,38 @@
 
 #define SIZEOF_UART_DATA 16
 
-void UART_Init();
+/**
+* Initialize hardware so UART data can be read
+*/
+void UART_Init(void);
 
-char UART_GetCharacter();
+/**
+* Returns the char from the Receiver Buffer Register
+*
+* @return  char from the Receiver Buffer Register
+*/
+char UART_GetCharacter(void);
 
-void UART_ReadData();
+/**
+* Reads character by character out of the Receiver Buffer Register and stores the read data in the variable "uartData"
+*/
+void UART_ReadData(void);
 
-const char * UART_GetData();
+/**
+* Returns the value of the variable "uartData"
+*
+* @return  uartData
+*/
+const char * UART_GetData(void);
 
-void UART_SetDataRead();
+/**
+* Function to reset the variable dataRead, it is a boolean that has to be 0 for the UART_ReadData to be able to read a new UART data.
+*/
+void UART_SetDataRead(void);
 
-void UART_ClearFIFO();
+/**
+* Function that clears the FIFO register that holds the character received via UART
+*/
+void UART_ClearFIFO(void);
 
 #endif /* UART_H_ */

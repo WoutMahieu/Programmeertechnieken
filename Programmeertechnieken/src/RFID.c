@@ -49,34 +49,6 @@ void RFID_SetMode(int m){
 	mode = m;
 }
 
-void RFID_AddTag(){
-
-	UART_ClearFIFO();
-	RFID_DataHandler();
-
-	if(strcmp(tagID, "") != 0){
-		RFID_AddTagLL(tagID);
-	}
-
-	//setting flag so new UART can be read
-	UART_SetDataRead(0);
-}
-
-void RFID_DeleteTag(const char* toDelete){
-	LinkedL_Delete(&startPtrRFID, toDelete);
-}
-
-void RFID_DriveLED(){
-	Wait_ms(200);
-
-	//if tag is in range turn LED1 on, otherwise turn LED1 off;
-	if(((LPC_GPIO0->FIOPIN >> 18) & 1) == 1){
-		LPC_GPIO1->FIOSET |= (1 << 18);
-	}
-	else{
-		LPC_GPIO1->FIOCLR |= (1 << 18);
-	}
-}
 
 const char* RFID_GetTagAndCheckSumData(const char * uartData){
 	//check for start of transmission (=0x02), otherwise data is discarded;

@@ -13,7 +13,7 @@
 /**
 * Initialize hardware for the visualization of the lock (LED)
 */
-void Lock_Init();
+void Lock_Init(void);
 
 /**
 * Open or closes the lock
@@ -27,6 +27,6 @@ void Lock_DriveLock(int bool);
 *
 * @return  0 if lock is closed, 1 if lock is opened
 */
-int Lock_GetStatus();
+int Lock_GetStatus(void);
 
 #endif /* LOCK_H_ */

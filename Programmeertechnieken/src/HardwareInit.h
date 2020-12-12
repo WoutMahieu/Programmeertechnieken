@@ -22,6 +22,6 @@
 /**
 * Calls all hardware initialization functions
 */
-void HardwareInit();
+void HardwareInit(void);
 
 #endif /* HARDWAREINIT_H_ */
