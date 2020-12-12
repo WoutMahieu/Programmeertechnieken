@@ -18,11 +18,12 @@ int InputControl_CheckJSLeft();
 int InputControl_CheckJSRight();
 int InputControl_CheckJSUp();
 int InputControl_CheckCS();
-void InputControl_DisableRFID();
-void InputControl_EnableRFID();
+void InputControl_ModeRFID();
 int InputControl_CheckRFID();
+int InputControl_CheckRFIDFalseTries();
+void InputControl_SetRFIDFalseTries(int);
 void InputControl_AddRFID();
-void InputConrol_EnableJoystick();
-void InputConrol_DisableJoystick();
+void InputControl_EnableJoystick();
+void InputControl_DisableJoystick();
 
 #endif /* INPUTCONTROL_H_ */

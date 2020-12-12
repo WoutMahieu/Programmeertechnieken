@@ -15,5 +15,6 @@
 void OutputControl_Lock(void);
 void OutputControl_Unlock(void);
 void OutputControl_Alarm(void);
+void OutputControl_Config(void);
 
 #endif /* OUTPUTCONTROL_H_ */

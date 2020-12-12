@@ -5,25 +5,6 @@
  *      Author: WoutMahieu
  */
 
-/*-------------------------------------------------------------------------------------------------------------
- *-------------------------------------------------------------------------------------------------------------
- *-------------------------------------------------------------------------------------------------------------
- *-------------------------------------------------------------------------------------------------------------
- *-------------------------------------------------------------------------------------------------------------
- *-------------------------------------------------------------------------------------------------------------
- *-------------------------------------------------------------------------------------------------------------
- *-------------------------------------------------------------------------------------------------------------
- *-------------------------------------------------------------------------------------------------------------
- *-------------------------------------------------------------------------------------------------------------
- *-------------------------------------------------------------------------------------------------------------
- *-------------------------------------------------------------------------------------------------------------
- *-------------------------------------------------------------------------------------------------------------
- * TOE TE VOEGEN:
- * 3x verkeerde tag = alarm
- * Automatisch sluiten na x seconden toe => Geïmplementeerd, ongetest
- * Joystick enable -> InputControl_joystickenable
- */
-
 #include "FSM.h"
 
 enum states {Init, Locked, Opened, Forced, Config};
@@ -51,7 +32,7 @@ void FSM_UpdateStates(void){
 		FSM_Locked();
 
 		//Check contactswitch, if '0' => Forced, else check for valid RFID: if valid => Opened else nothing
-		if(!InputControl_CheckCS()){
+		if(!InputControl_CheckCS() || InputControl_CheckRFIDFalseTries() >= 3){
 			FSM_ExitLocked();
 			FSM_CurrentState = Forced;
 			FSM_EnterForced();
@@ -77,19 +58,24 @@ void FSM_UpdateStates(void){
 			FSM_CurrentState = Config;
 			FSM_EnterConfig();
 		}
-//		else if(InputControl_CheckCS()){
-//			if(!Timer_CheckTimer()){
-//				Timer_StartTimer(10);
-//			}
-//			else{
-//				FSM_ExitOpened();
-//				FSM_CurrentState = Locked;
-//				FSM_EnterLocked();
-//			}
-//		}
-//		else{
-//			Timer_StopTimer();
-//		}
+		else if(InputControl_CheckCS()){
+			if(!Timer_CheckTimerStarted()){
+				Timer_StartTimer(10);
+			}
+			else{
+				if(Timer_CheckTimer()){
+					//Timer ready
+					Timer_StopTimer();
+
+					FSM_ExitOpened();
+					FSM_CurrentState = Locked;
+					FSM_EnterLocked();
+				}
+			}
+		}
+		else{
+			Timer_StopTimer();
+		}
 
 		break;
 	case Forced:
@@ -127,27 +113,21 @@ void FSM_UpdateStates(void){
 void FSM_Init(void){
 	//Init all hardware & show initialization message on screen !!!! set LCD_autoUpdate = 0; !!!!
 	HardwareInit();
-
-	//disable RFID
-	//InputControl_DisableRFID();
 }
 
-void FSM_ExitInit(void){}
+void FSM_ExitInit(void){
+}
 
 void FSM_EnterLocked(void){
 	//Display locked screen & lock
 	DisplayControl_LockedScreen();
 	OutputControl_Lock();
-
-	//enable RFID
-	//InputControl_EnableRFID();
 }
 
 void FSM_Locked(void){}
 
 void FSM_ExitLocked(void){
-	//disable RFID
-	//InputControl_DisableRFID();
+	InputControl_SetRFIDFalseTries(0);
 }
 
 void FSM_EnterOpened(void){
@@ -156,14 +136,16 @@ void FSM_EnterOpened(void){
 	OutputControl_Unlock();
 
 	//enable joystick
-	Joystick_Enable();
+	InputControl_EnableJoystick();
 }
 
 void FSM_Opened(void){}
 
 void FSM_ExitOpened(void){
 	//disable joystick
-	Joystick_Disable();
+	InputControl_DisableJoystick();
+	InputControl_SetRFIDFalseTries(0);
+	Timer_StopTimer();
 }
 
 void FSM_EnterForced(void){
@@ -174,36 +156,44 @@ void FSM_EnterForced(void){
 
 void FSM_Forced(void){}
 
-void FSM_ExitForced(void){}
+void FSM_ExitForced(void){
+	//reset false tries
+	InputControl_SetRFIDFalseTries(0);
+}
 
 void FSM_EnterConfig(void){
 	//enable joystick
-	Joystick_Enable();
+	InputControl_EnableJoystick();
 
 	//Show config screen
 	DisplayControl_MenuBuilder();
 
-	//disable RFID interrupt
-	InputControl_DisableRFID();
+	//LED
+	OutputControl_Config();
 }
 
 void FSM_Config(void){
 	//Handle joystick input & add/remove RFID tags, depending on mode
-	if(!Displaycontrol_ConfigScreen()){
-		if(InputControl_CheckJSCenter()){
-			//add tag
-			InputControl_AddRFID();
-		}
-	}
-	else{
-		//remove tag
+	switch(Displaycontrol_ConfigScreen()){
+		case 0:
+		default:
+			//set RFID mode to addtag
+			InputControl_ModeRFID(1);
+			break;
+		case 1:
+			//set RFID mode to deletetag
+			InputControl_ModeRFID(2);
+			break;
+		case 2:
+			DisplayControl_PrintTags();
+			break;
 	}
 }
 
 void FSM_ExitConfig(void){
 	//disable joystick
-	Joystick_Disable();
+	InputControl_DisableJoystick();
 
-	//enable RFID interrupt
-	InputControl_EnableRFID();
+	//set RFID mode to lock
+	InputControl_ModeRFID(0);
 }

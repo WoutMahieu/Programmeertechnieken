@@ -11,6 +11,7 @@
 #include <stdio.h>
 #include <stdlib.h>
 #include <string.h>
+#include "StatusLED.h"
 
 /**
 * A node of the linked list
@@ -44,7 +45,7 @@ void LinkedL_Push(LinkedList_t ** startPtrPtr, const char * value);
 *
 * @return  the deleted array of characters (= string)
 */
-const char * LinkedL_Delete(LinkedList_t ** startPtrPtr, const char * value);
+void LinkedL_Delete(LinkedList_t ** startPtrPtr, const char * value);
 
 /**
 * Checks if a specific string is in the linked list

@@ -13,5 +13,6 @@
 void Timer_StartTimer(uint32_t t);
 int Timer_CheckTimer();
 void Timer_StopTimer();
+int Timer_CheckTimerStarted();
 
 #endif /* TIMER_H_ */
