@@ -55,8 +55,8 @@ int Delay_GetFlag(){
 }
 
 void Delay_ResetTime(){
-	LPC_TIM1->TCR &= ~1;
-	LPC_TIM1->TCR = (1 << 1);
+	LPC_TIM1->TCR &= ~1; //stop the timer
+	LPC_TIM1->TCR = (1 << 1); //Reset the timer
 	timerReady = 0;
 }
 

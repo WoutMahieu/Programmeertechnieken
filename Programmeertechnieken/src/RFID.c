@@ -25,6 +25,9 @@ int falseTries = 0;
 LinkedList_t* startPtrRFID = NULL;
 
 void RFID_Init(){
+	//Init UART
+	UART_Init();
+
 	//LED1 as indicator of Tag in range
 	LPC_GPIO1->FIODIR |= (1 << 18); //select p1.18 (LED 1) and write 1 to make it an output
 

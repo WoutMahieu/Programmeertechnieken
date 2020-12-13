@@ -13,16 +13,15 @@
 
 #include "Joystick.h"
 #include "RFID.h"
-#include "Delay.h"
 
-/**
+/*
 * Interrupt handler:
 * ->handles the interrupt that is caused when a RFID-tag is in range of the RFID-reader
 * ->handles interrupts caused by the joystick
 */
 void EINT3_IRQHandler(void);
 
-/**
+/*
 * Interrupt handler:
 * ->handles the interrupt that is caused by the timer when it is ready
 */

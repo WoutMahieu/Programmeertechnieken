@@ -6,8 +6,6 @@
  */
 
 #include "LCD.h"
-#include "SSP.h"
-#include "Delay.h"
 #include "Fonts.h"
 
 uint32_t LCD_screenBuffer[128] = { };

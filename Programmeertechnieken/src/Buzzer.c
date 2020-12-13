@@ -20,11 +20,11 @@ void Buzzer_Init(void){
 }
 
 void Buzzer_Enable(void){
-	LPC_PWM1->TCR |= (1 << 0);
+	LPC_PWM1->TCR |= (1 << 0); //enable PWM
 }
 
 void Buzzer_Disable(void){
-	LPC_PWM1->TCR &= ~(1 << 0);
+	LPC_PWM1->TCR &= ~(1 << 0); //disable PWM
 }
 
 void Buzzer_Frequency(uint8_t f){

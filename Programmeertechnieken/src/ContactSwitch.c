@@ -7,8 +7,8 @@
 #include "ContactSwitch.h"
 
 void ContactSwitch_Init(void){
-	LPC_PINCON->PINMODE3 |= (3 << 28);
-	LPC_GPIO1->FIODIR &= ~(1 << 30);
+	LPC_PINCON->PINMODE3 |= (3 << 28); //pull down resistor on the pin
+	LPC_GPIO1->FIODIR &= ~(1 << 30); //pin =input
 }
 
 uint8_t ContactSwitch_GetFlag(void){

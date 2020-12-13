@@ -115,8 +115,7 @@ void FSM_Init(void){
 	HardwareInit();
 }
 
-void FSM_ExitInit(void){
-}
+void FSM_ExitInit(void){}
 
 void FSM_EnterLocked(void){
 	//Display locked screen & lock

@@ -9,8 +9,8 @@
 
 void StatusLED_Init(void){
 	//GPIO
-	LPC_GPIO2->FIODIR |= (7 << 1);
-	LPC_GPIO2->FIOSET |= (7 << 1);
+	LPC_GPIO2->FIODIR |= (7 << 1); //direction = out
+	LPC_GPIO2->FIOSET |= (7 << 1); //turn off all leds (= pins on)
 }
 
 void StatusLED_Red(int bool){

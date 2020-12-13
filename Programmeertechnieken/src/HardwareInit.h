@@ -15,11 +15,9 @@
 #include "LCD.h"
 #include "Lock.h"
 #include "RFID.h"
-#include "SSP.h"
 #include "StatusLED.h"
-#include "UART.h"
 
-/**
+/*
 * Calls all hardware initialization functions
 */
 void HardwareInit(void);
