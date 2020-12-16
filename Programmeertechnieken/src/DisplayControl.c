@@ -168,7 +168,7 @@ void MenuPositionUpdater(){
 
 void MenuCursorUpdater(int pos){
 
-	InputControl_EnableJoystick();
+	InputControl_DisableJoystick();
 
 	if(pos == 0){
 		LCD_Rect(0, 9, 60, 10, 1);
@@ -191,5 +191,5 @@ void MenuCursorUpdater(int pos){
 		LCD_Update();
 	}
 
-	InputControl_DisableJoystick();
+	InputControl_EnableJoystick();
 }
