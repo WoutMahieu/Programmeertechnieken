@@ -151,6 +151,7 @@ void MenuPositionUpdater(){
 	int up = InputControl_CheckJSUp();
 	int down = InputControl_CheckJSDown();
 
+	//change position with input
 	if(right || left){
 		if(position == 0)
 			position = 1;
@@ -167,7 +168,7 @@ void MenuPositionUpdater(){
 }
 
 void MenuCursorUpdater(int pos){
-
+	//disable new input
 	InputControl_DisableJoystick();
 
 	if(pos == 0){
@@ -191,5 +192,6 @@ void MenuCursorUpdater(int pos){
 		LCD_Update();
 	}
 
+	//enable inputs again
 	InputControl_EnableJoystick();
 }

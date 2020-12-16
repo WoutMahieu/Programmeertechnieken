@@ -22,6 +22,6 @@ void EINT3_IRQHandler() {
 
 void TIMER1_IRQHandler(){
 	Delay_SetFlag(1);
-	LPC_TIM1->IR |= 1;
+	LPC_TIM1->IR |= 1; //clear interrupt
 	assert(LPC_TIM1->IR == 0);
 }

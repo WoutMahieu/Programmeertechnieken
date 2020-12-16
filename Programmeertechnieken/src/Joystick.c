@@ -64,44 +64,44 @@ void Joystick_InputHandler() {
 		//check interrupt status for p0.15 (LEFT) rising edge interrupt:
 		if (((LPC_GPIOINT->IO0IntStatR >> 15) & 1) == 1) {
 			joystickFlags = 1;
-			LPC_GPIOINT->IO0IntClr |= (1 << 15); //
+			LPC_GPIOINT->IO0IntClr |= (1 << 15); //Clear interrupt
 			assert(LPC_GPIOINT->IO0IntClr == 0); //read the interrupt flag to make sure it has been set
 		}
 
 		//check interrupt status for p0.16 (CENTER) rising edge interrupt:
 		else if(((LPC_GPIOINT->IO0IntStatR >> 16) & 1) == 1) {
 			joystickFlags = 2;
-			LPC_GPIOINT->IO0IntClr |= (1 << 16); //
+			LPC_GPIOINT->IO0IntClr |= (1 << 16); //Clear interrupt
 			assert(LPC_GPIOINT->IO0IntClr == 0); //read the interrupt flag to make sure it has been set
 		}
 
 		//check interrupt status for p0.17 (DOWN) rising edge interrupt:
 		else if(((LPC_GPIOINT->IO0IntStatR >> 17) & 1) == 1) {
 			joystickFlags = 4;
-			LPC_GPIOINT->IO0IntClr |= (1 << 17); //
+			LPC_GPIOINT->IO0IntClr |= (1 << 17); //Clear interrupt
 			assert(LPC_GPIOINT->IO0IntClr == 0); //read the interrupt flag to make sure it has been set
 		}
 
 		//check interrupt status for p0.23 (UP) rising edge interrupt:
 		else if(((LPC_GPIOINT->IO0IntStatR >> 23) & 1) == 1) {
 			joystickFlags = 8;
-			LPC_GPIOINT->IO0IntClr |= (1 << 23); //
+			LPC_GPIOINT->IO0IntClr |= (1 << 23); //Clear interrupt
 			assert(LPC_GPIOINT->IO0IntClr == 0); //read the interrupt flag to make sure it has been set
 		}
 
 		//check interrupt status for p0.24 (RIGHT) rising edge interrupt:
 		else if(((LPC_GPIOINT->IO0IntStatR >> 24) & 1) == 1) {
 			joystickFlags = 16;
-			LPC_GPIOINT->IO0IntClr |= (1 << 24); //
+			LPC_GPIOINT->IO0IntClr |= (1 << 24); //Clear interrupt
 			assert(LPC_GPIOINT->IO0IntClr == 0); //read the interrupt flag to make sure it has been set
 		}
 	}
 	else{
-		LPC_GPIOINT->IO0IntClr |= (1 << 15); //
-		LPC_GPIOINT->IO0IntClr |= (1 << 16); //
-		LPC_GPIOINT->IO0IntClr |= (1 << 17); //
-		LPC_GPIOINT->IO0IntClr |= (1 << 23); //
-		LPC_GPIOINT->IO0IntClr |= (1 << 24); //
+		LPC_GPIOINT->IO0IntClr |= (1 << 15); //Clear interrupts
+		LPC_GPIOINT->IO0IntClr |= (1 << 16);
+		LPC_GPIOINT->IO0IntClr |= (1 << 17);
+		LPC_GPIOINT->IO0IntClr |= (1 << 23);
+		LPC_GPIOINT->IO0IntClr |= (1 << 24);
 		assert(LPC_GPIOINT->IO0IntClr == 0); //read the interrupt flag to make sure it has been set
 	}
 }

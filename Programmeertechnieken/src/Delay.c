@@ -61,5 +61,5 @@ void Delay_ResetTime(){
 }
 
 int Delay_CheckTimerStarted(){
-	return (LPC_TIM1->TCR & 0x1);
+	return (LPC_TIM1->TCR & 0x1); //Check if the timer has started
 }

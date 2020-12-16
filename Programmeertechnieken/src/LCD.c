@@ -77,6 +77,7 @@ void LCD_Update(void){
 		LCD_SetPage(p);
 		LCD_SetColumn(0);
 
+		//Send screen buffer to LCD RAM
 		for(uint8_t i = 0; i < 128; i++){
 			uint8_t d = ((LCD_screenBuffer[i] & (0xFF << (8*p))) >> (8*p));
 			LCD_Data(d);

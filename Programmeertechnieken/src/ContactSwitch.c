@@ -12,5 +12,5 @@ void ContactSwitch_Init(void){
 }
 
 uint8_t ContactSwitch_GetFlag(void){
-	return (uint8_t)((LPC_GPIO1->FIOPIN >> 30) & 0x1);
+	return (uint8_t)((LPC_GPIO1->FIOPIN >> 30) & 0x1); //get the pin status
 }
